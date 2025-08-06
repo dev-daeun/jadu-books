@@ -1,6 +1,6 @@
 export default async function Page({ searchParams }: { searchParams: Promise<{ q: string }> }) {
-    console.log(await searchParams);
+    const { q } = await searchParams;
     return <>
-        <h3>search page</h3>
+        <h3>search page {q}</h3>
     </>
 }
