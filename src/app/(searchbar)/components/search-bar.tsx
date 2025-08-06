@@ -3,6 +3,7 @@
 
 import React, { useState } from "react"
 import { useRouter } from "next/navigation";
+import styles from "./search-bar.module.css"
 
 export default function SearchBar() {
     const router = useRouter();
@@ -19,7 +20,7 @@ export default function SearchBar() {
         }
     }
     return (
-        <div>
+        <div className={styles.searchbar_container}>
             <input value={searchWord} onChange={onInputChange} onKeyDown={onKeyDown}/>
             <button onClick={onButtonClick}>검색</button>
         </div>
