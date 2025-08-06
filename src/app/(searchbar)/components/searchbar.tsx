@@ -2,19 +2,26 @@
 
 
 import React, { useState } from "react"
-
+import { useRouter } from "next/navigation";
 
 export default function SearchBar() {
+    const router = useRouter();
     const [searchWord, setSearchWord] = useState("")
-    
     const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSearchWord(e.target.value)
     }
-
+    const onButtonClick = () => {
+        router.push(`/search?q=${searchWord}`)
+    }
+    const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === "Enter") {
+            router.push(`/search?q=${searchWord}`)
+        }
+    }
     return (
         <div>
-            <input value={searchWord} onChange={onInputChange}/>
-            <button>검색</button>
+            <input value={searchWord} onChange={onInputChange} onKeyDown={onKeyDown}/>
+            <button onClick={onButtonClick}>검색</button>
         </div>
     )
 }
