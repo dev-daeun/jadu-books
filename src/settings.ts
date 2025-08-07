@@ -1,5 +1,5 @@
 const settings = {
-    backendBaseUrl: "http://localhost:12345"
+    backendBaseUrl: process.env.BACKEND_BASE_URL
 } as const;
 
 
