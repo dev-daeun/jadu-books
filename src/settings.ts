@@ -1,5 +1,5 @@
 const settings = {
-    backendBaseUrl: "http://localhost:3000"
+    backendBaseUrl: "http://localhost:12345"
 } as const;
 
 
