@@ -3,14 +3,15 @@ import settings from "@/settings"
 
 
 export async function fetchAllBooks(q?: string): Promise<BookItem[]> {
-    const url = new URL(settings.backendBaseUrl, "/book")
+    const urlpath = q ? "/book/search" : "/book"
+    const url = new URL(urlpath, settings.backendBaseUrl)
     if (q) {
         url.searchParams.append("q", q)
     }
     try {
         const response = await fetch(url)
         if (!response.ok) {
-            throw new Error()
+            throw new Error(await response.text())
         }
         return await response.json()
     }
@@ -21,11 +22,11 @@ export async function fetchAllBooks(q?: string): Promise<BookItem[]> {
 }
 
 export async function fetchRecommendedBooks (): Promise<BookItem[]> {
-  const url = new URL(settings.backendBaseUrl, "/book/random").toString()
+  const url = new URL("/book/random", settings.backendBaseUrl).toString()
   try {
       const response = await fetch(url)
       if (!response.ok) {
-          throw new Error();
+        throw new Error(await response.text())
       }
       return await response.json()
   }
