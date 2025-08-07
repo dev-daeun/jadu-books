@@ -1,5 +1,8 @@
+import { StatusCodes } from 'http-status-codes';
+
+
 type ApiResponse<T> = {
-    success: boolean,
+    statusCode: StatusCodes,
     data: T
 }
 export default ApiResponse

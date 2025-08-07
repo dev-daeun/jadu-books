@@ -1,6 +1,7 @@
 import settings from "@/settings"
 import ApiResponse from "@/types/api-response"
 import { BookItem } from "@/types/book-item"
+import { StatusCodes } from "http-status-codes"
 
 
 
@@ -14,13 +15,13 @@ export async function fetchAllBooks(q?: string): Promise<ApiResponse<BookItem[]>
         const response = await fetch(url)
         if (!response.ok) {
             console.error("Backend responded error: ", await response.text())
-            return { success: false, data: [] }
+            return { statusCode: response.status as StatusCodes, data: [] }
         }
-        return { success: true, data: await response.json() }
+        return { statusCode: response.status as StatusCodes, data: await response.json() }
     }
     catch (err) {
         console.error("Error occurred while fetching books: ", err)
-        return { success: false, data: [] }
+        return { statusCode: StatusCodes.INTERNAL_SERVER_ERROR,  data: [] }
     }
 
 }
@@ -31,12 +32,29 @@ export async function fetchRecommendedBooks (): Promise<ApiResponse<BookItem[]>>
         const response = await fetch(url)
         if (!response.ok) {
             console.error("Backend responded error: ", await response.text())
-            return { success: false, data: [] }
+            return { statusCode: response.status as StatusCodes, data: [] }
         }
-        return { success: true, data: await response.json() }
+        return { statusCode: response.status as StatusCodes, data: await response.json() }
     }
     catch (err) {
         console.error("Error occurred while fetching recommended books: ", err)
-        return { success: false, data: [] }
+        return { statusCode: StatusCodes.INTERNAL_SERVER_ERROR,  data: [] }
+    }
+}
+
+
+export async function fetchBook(id: number): Promise<ApiResponse<BookItem | null>> {
+    const url = new URL(`/book/${id}`, settings.backendBaseUrl).toString()
+    try {
+        const response = await fetch(url)
+        if (!response.ok) {
+            console.error("Backend responded error: ", await response.text())
+            return { statusCode: response.status as StatusCodes, data: null }
+        }
+        return { statusCode: response.status as StatusCodes, data: await response.json() }
+    }
+    catch (err) {
+        console.error("Error occurred while fetching book: ", err)
+        return { statusCode: StatusCodes.INTERNAL_SERVER_ERROR, data: null }
     }
 }
