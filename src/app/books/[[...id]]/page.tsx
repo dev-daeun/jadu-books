@@ -4,6 +4,7 @@ import { BookItem } from "@/types/book-item";
 import { StatusCodes } from "http-status-codes";
 import styles from "./page.module.css"
 import { notFound } from "next/navigation";
+import BackendErrorMessage from "@/app/(searchbar)/components/backend-error-message";
 
 
 async function BookDetail({ title, subTitle, description, author, publisher, coverImgUrl }: BookItem) {
@@ -30,8 +31,6 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
         case StatusCodes.NOT_FOUND:
             notFound()
         case StatusCodes.INTERNAL_SERVER_ERROR:
-            return (
-                <div><p>오류가 발생했습니다...</p></div>
-            )
+            return <BackendErrorMessage />
     } 
 }

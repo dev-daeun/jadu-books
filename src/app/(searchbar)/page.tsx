@@ -6,6 +6,7 @@ import ApiResponse from "@/types/api-response";
 import { StatusCodes } from "http-status-codes";
 import { Suspense } from "react";
 import BookListSkeleton from "./components/book-list-skeleton";
+import BackendErrorMessage from "./components/backend-error-message";
 
 
 async function AllBooks(){
@@ -18,9 +19,7 @@ async function AllBooks(){
         </div>
       )
     case StatusCodes.INTERNAL_SERVER_ERROR:
-      return (
-        <div><p>오류가 발생했습니다...</p></div>
-      )
+      return <BackendErrorMessage />
   }
 }
 
@@ -35,9 +34,7 @@ async function RecommendedBooks(){
         </div>
       )
     case StatusCodes.INTERNAL_SERVER_ERROR:
-      return (
-        <div><p>오류가 발생했습니다...</p></div>
-      )
+      return <BackendErrorMessage />
   }
 }
 
