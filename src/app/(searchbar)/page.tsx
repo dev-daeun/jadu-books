@@ -4,6 +4,7 @@ import styles from "./page.module.css";
 import { BookItem } from "@/types/book-item";
 import ApiResponse from "@/types/api-response";
 import { StatusCodes } from "http-status-codes";
+import { Suspense } from "react";
 
 
 async function AllBooks(){
@@ -40,18 +41,23 @@ async function RecommendedBooks(){
 }
 
 
-export default async function Home() {
+export default function Home() {
   return (
     <div className={styles.container}>
       <section>
         <h3>지금 추천하는 도서</h3>
-        <RecommendedBooks/>
+        <Suspense fallback={<div>Loading...</div>}>
+          <RecommendedBooks/>
+        </Suspense>
       </section>
       <section>
         <h3>등록된 모든 도서</h3>
-        <AllBooks/>
+        <Suspense fallback={<div>Loading...</div>}>
+          <AllBooks/>
+        </Suspense>
       </section>
       
     </div>
   );
 }
+
