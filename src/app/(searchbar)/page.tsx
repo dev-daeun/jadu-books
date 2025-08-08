@@ -5,6 +5,7 @@ import { BookItem } from "@/types/book-item";
 import ApiResponse from "@/types/api-response";
 import { StatusCodes } from "http-status-codes";
 import { Suspense } from "react";
+import BookListSkeleton from "./components/book-list-skeleton";
 
 
 async function AllBooks(){
@@ -46,14 +47,14 @@ export default function Home() {
     <div className={styles.container}>
       <section>
         <h3>지금 추천하는 도서</h3>
-        <Suspense fallback={<div>Loading...</div>}>
-          <RecommendedBooks/>
+        <Suspense fallback={<BookListSkeleton />}>
+            <RecommendedBooks/>
         </Suspense>
       </section>
       <section>
         <h3>등록된 모든 도서</h3>
-        <Suspense fallback={<div>Loading...</div>}>
-          <AllBooks/>
+        <Suspense fallback={<BookListSkeleton num={5} />}>
+            <AllBooks/>
         </Suspense>
       </section>
       

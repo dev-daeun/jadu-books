@@ -4,6 +4,7 @@ import { BookItem } from "@/types/book-item";
 import ApiResponse from "@/types/api-response";
 import { StatusCodes } from "http-status-codes";
 import { Suspense } from "react";
+import BookListSkeleton from "../components/book-list-skeleton";
 
 
 async function SearchResult({ q }: { q?: string }) {
@@ -26,8 +27,8 @@ async function SearchResult({ q }: { q?: string }) {
 export default async function Page({ searchParams }: { searchParams: Promise<{ q: string }> }) {
     const { q } = await searchParams;
     return (
-      <Suspense key={q} fallback={<div>Loading...</div>}>
-        <SearchResult q={q}/>
+      <Suspense fallback={<BookListSkeleton />} key={q}>
+       <SearchResult q={q}/>
       </Suspense>
     )
 }
