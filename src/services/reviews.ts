@@ -1,3 +1,6 @@
+"use server"
+
+
 import ApiResponse from "@/types/api-response"
 import { PostReviewResult, PostReviewResultType, Review, reviewSchema, ReviewSchemaKeys, ReviewValidationError } from "@/types/review"
 import { StatusCodes } from "http-status-codes"

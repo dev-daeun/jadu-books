@@ -1,3 +1,5 @@
+"use server"
+
 import settings from "@/settings"
 import ApiResponse from "@/types/api-response"
 import { BookItem } from "@/types/book-item"
