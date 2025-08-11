@@ -5,11 +5,12 @@ import { StatusCodes } from "http-status-codes";
 import styles from "./page.module.css"
 import { notFound } from "next/navigation";
 import BackendErrorMessage from "@/app/(searchbar)/components/backend-error-message";
+import ReviewEditor from "./review-editor";
 
 
-async function BookDetail({ title, subTitle, description, author, publisher, coverImgUrl }: BookItem) {
+function BookDetail({ title, subTitle, description, author, publisher, coverImgUrl }: BookItem) {
     return (
-        <div className={styles.container}>
+        <section >
             <div className={styles.cover_img_container} style={{ backgroundImage: `url('${coverImgUrl}')` }}>
                 <img src={coverImgUrl}/>
             </div>
@@ -17,9 +18,12 @@ async function BookDetail({ title, subTitle, description, author, publisher, cov
             <div className={styles.subTitle}>{subTitle}</div>
             <div className={styles.author}>{author} | {publisher}</div>
             <div className={styles.description}>{description}</div>
-        </div>
+        </section>
       )
 }
+
+
+
 
 
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
@@ -27,10 +31,17 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
     const response: ApiResponse<BookItem | null> = await fetchBook(Number(id))
     switch (response.statusCode) {
         case StatusCodes.OK:
-            return <BookDetail {...response.data as BookItem}/>
+            return (
+                <div className={styles.container}>
+                    <BookDetail {...response.data as BookItem}/>
+                    <ReviewEditor bookId={Number(id)} />
+                </div>
+            )
         case StatusCodes.NOT_FOUND:
             notFound()
         case StatusCodes.INTERNAL_SERVER_ERROR:
             return <BackendErrorMessage />
     } 
 }
+
+
