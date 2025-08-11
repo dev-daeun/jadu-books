@@ -14,13 +14,13 @@ export async function fetchAllBooks(q?: string): Promise<ApiResponse<BookItem[]>
     try {
         const response = await fetch(url)
         if (!response.ok) {
-            console.error("Backend responded error: ", await response.text())
+            console.error(`Backend responded error: endpoint=${response.url} status=${response.status} body=${await response.text()}`)
             return { statusCode: response.status as StatusCodes, data: [] }
         }
         return { statusCode: response.status as StatusCodes, data: await response.json() }
     }
     catch (err) {
-        console.error("Error occurred while fetching books: ", err)
+        console.error("Error occurred while fetching book list: ", err)
         return { statusCode: StatusCodes.INTERNAL_SERVER_ERROR,  data: [] }
     }
 
@@ -31,13 +31,13 @@ export async function fetchRecommendedBooks (): Promise<ApiResponse<BookItem[]>>
     try {
         const response = await fetch(url)
         if (!response.ok) {
-            console.error("Backend responded error: ", await response.text())
+            console.error(`Backend responded error: endpoint=${response.url} status=${response.status} body=${await response.text()}`)
             return { statusCode: response.status as StatusCodes, data: [] }
         }
         return { statusCode: response.status as StatusCodes, data: await response.json() }
     }
     catch (err) {
-        console.error("Error occurred while fetching recommended books: ", err)
+        console.error("Error occurred while fetching recommended book list: ", err)
         return { statusCode: StatusCodes.INTERNAL_SERVER_ERROR,  data: [] }
     }
 }
@@ -48,7 +48,7 @@ export async function fetchBook(id: number): Promise<ApiResponse<BookItem | null
     try {
         const response = await fetch(url)
         if (!response.ok) {
-            console.error("Backend responded error: ", await response.text())
+            console.error(`Backend responded error: endpoint=${response.url} status=${response.status} body=${await response.text()}`)
             return { statusCode: response.status as StatusCodes, data: null }
         }
         return { statusCode: response.status as StatusCodes, data: await response.json() }
