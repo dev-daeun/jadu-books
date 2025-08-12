@@ -5,7 +5,7 @@ import ApiResponse from "@/types/api-response"
 import { PostReviewResult, PostReviewResultType, Review, reviewSchema, ReviewSchemaKeys, ReviewValidationError, ReviewItem } from "@/types/review"
 import { StatusCodes } from "http-status-codes"
 import settings from "@/settings"
-import { revalidatePath } from "next/cache"
+import { revalidateTag } from "next/cache"
 
 
 async function requestPostReview(review: Review): Promise<ApiResponse<Review | null>> {
@@ -42,7 +42,7 @@ export async function createReviewAction(previousState: PostReviewResult, formDa
     
     const response = await requestPostReview(result.data)
     if (response.statusCode === StatusCodes.CREATED) {
-        revalidatePath(`/books/${result.data.bookId}`)
+        revalidateTag(`review-list-${result.data.bookId}`)
         return { result: PostReviewResultType.SUCCEEDED, backendResponse: response }
     }
     return { result: PostReviewResultType.BACKEND_ERROR, backendResponse: response }
@@ -51,7 +51,10 @@ export async function createReviewAction(previousState: PostReviewResult, formDa
 
 export async function getReviews(bookId: number): Promise<ApiResponse<ReviewItem[]>> {
     try {
-        const response = await fetch(new URL(`/review/book/${bookId}`, settings.backendBaseUrl).toString())
+        const response = await fetch(
+            new URL(`/review/book/${bookId}`, settings.backendBaseUrl).toString(),
+            { next: { tags: [`review-list-${bookId}`] } }
+        )
         if (!response.ok) {
             console.error(`Backend responded error: endpoint=${response.url} status=${response.status} body=${await response.text()}`)
             return {statusCode: response.status as StatusCodes, data: []}
@@ -85,7 +88,7 @@ export async function deleteReviewAction(previousState: PostReviewResult, formDa
     const bookId = Number(formData.get("bookId"))
     const response = await requestDeleteReview(reviewId)
     if (response.statusCode === StatusCodes.OK) {
-        revalidatePath(`/books/${bookId}`)
+        revalidateTag(`review-list-${bookId}`)
         return { result: PostReviewResultType.SUCCEEDED, backendResponse: response }
     }
     return { result: PostReviewResultType.BACKEND_ERROR, backendResponse: response }
