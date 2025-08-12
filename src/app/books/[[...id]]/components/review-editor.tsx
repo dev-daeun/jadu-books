@@ -1,7 +1,7 @@
 "use client"
 
 import { useActionState, useState } from "react";
-import { createReview } from "@/services/reviews";
+import { createReviewAction } from "@/services/reviews";
 import { PostReviewResult, PostReviewResultType } from "@/types/review";
 import styles from "./review-editor.module.css"
 
@@ -53,7 +53,7 @@ function ReviewEditorForm(
 
 export default function ReviewEditor({ bookId }: { bookId: number }) {
     const [input, setInput] = useState({author: "", content: ""})
-    const [state, formAction, isPending] = useActionState(createReview, { result: PostReviewResultType.INITIAL });
+    const [state, formAction, isPending] = useActionState(createReviewAction, { result: PostReviewResultType.INITIAL });
     const onChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
         setInput({
             ...input,

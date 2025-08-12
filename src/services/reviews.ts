@@ -26,7 +26,7 @@ async function requestPostReview(review: Review): Promise<ApiResponse<Review | n
 }   
 
 
-export async function createReview(previousState: PostReviewResult, formData: FormData): Promise<PostReviewResult> {
+export async function createReviewAction(previousState: PostReviewResult, formData: FormData): Promise<PostReviewResult> {
     const result = reviewSchema.safeParse({
         author: formData.get("author")?.toString(),
         content: formData.get("content")?.toString(),
