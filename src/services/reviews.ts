@@ -10,7 +10,7 @@ import { revalidatePath } from "next/cache"
 
 async function requestPostReview(review: Review): Promise<ApiResponse<Review | null>> {
     try {
-        const response = await fetch(`${settings.backendBaseUrl}/review`, {
+        const response = await fetch(new URL("/review", settings.backendBaseUrl).toString(), {
             method: "POST",
             body: JSON.stringify(review),
         })
@@ -51,7 +51,7 @@ export async function createReviewAction(previousState: PostReviewResult, formDa
 
 export async function getReviews(bookId: number): Promise<ApiResponse<ReviewItem[]>> {
     try {
-        const response = await fetch(`${settings.backendBaseUrl}/review/book/${bookId}`)
+        const response = await fetch(new URL(`/review/book/${bookId}`, settings.backendBaseUrl).toString())
         if (!response.ok) {
             console.error(`Backend responded error: endpoint=${response.url} status=${response.status} body=${await response.text()}`)
             return {statusCode: response.status as StatusCodes, data: []}
