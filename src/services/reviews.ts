@@ -2,7 +2,7 @@
 
 
 import ApiResponse from "@/types/api-response"
-import { PostReviewResult, PostReviewResultType, Review, reviewSchema, ReviewSchemaKeys, ReviewValidationError } from "@/types/review"
+import { PostReviewResult, PostReviewResultType, Review, reviewSchema, ReviewSchemaKeys, ReviewValidationError, ReviewItem } from "@/types/review"
 import { StatusCodes } from "http-status-codes"
 import settings from "@/settings"
 
@@ -44,4 +44,19 @@ export async function createReview(previousState: PostReviewResult, formData: Fo
         return { result: PostReviewResultType.SUCCEEDED, backendResponse: response }
     }
     return { result: PostReviewResultType.BACKEND_ERROR, backendResponse: response }
+}
+
+
+export async function getReviews(bookId: number): Promise<ApiResponse<ReviewItem[]>> {
+    try {
+        const response = await fetch(`${settings.backendBaseUrl}/review/book/${bookId}`)
+        if (!response.ok) {
+            console.error(`Backend responded error: endpoint=${response.url} status=${response.status} body=${await response.text()}`)
+            return {statusCode: response.status as StatusCodes, data: []}
+        }
+        return {statusCode: response.status as StatusCodes, data: await response.json()}
+    } catch (error) {
+        console.error("Error occurred while getting reviews: ", error)
+        return { statusCode: StatusCodes.INTERNAL_SERVER_ERROR, data: [] }
+    }
 }

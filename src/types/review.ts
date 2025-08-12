@@ -13,10 +13,14 @@ export const reviewSchema = z.object({
   
   bookId: z.number()
     .int('bookId는 정수여야 합니다.')
-    .positive('bookId는 양수여야 합니다.')
+    .positive('bookId는 양수여야 합니다.'),
 })
 
 export type Review = z.infer<typeof reviewSchema>
+export type ReviewItem = Review & {
+  id: number;
+  createdAt: Date;
+}
 export type ReviewSchemaKeys = keyof z.infer<typeof reviewSchema>
 export type ReviewValidationError = Partial<Record<ReviewSchemaKeys, string>>
 

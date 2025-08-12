@@ -6,6 +6,7 @@ import styles from "./page.module.css"
 import { notFound } from "next/navigation";
 import BackendErrorMessage from "@/app/(searchbar)/components/backend-error-message";
 import ReviewEditor from "./components/review-editor";
+import ReviewList from "./components/review-list";
 
 
 function BookDetail({ title, subTitle, description, author, publisher, coverImgUrl }: BookItem) {
@@ -35,6 +36,7 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
                 <div className={styles.container}>
                     <BookDetail {...response.data as BookItem}/>
                     <ReviewEditor bookId={Number(id)} />
+                    <ReviewList bookId={Number(id)} />
                 </div>
             )
         case StatusCodes.NOT_FOUND:
