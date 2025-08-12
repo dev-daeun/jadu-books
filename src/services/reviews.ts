@@ -5,6 +5,7 @@ import ApiResponse from "@/types/api-response"
 import { PostReviewResult, PostReviewResultType, Review, reviewSchema, ReviewSchemaKeys, ReviewValidationError, ReviewItem } from "@/types/review"
 import { StatusCodes } from "http-status-codes"
 import settings from "@/settings"
+import { revalidatePath } from "next/cache"
 
 
 async function postReview(review: Review): Promise<ApiResponse<Review | null>> {
@@ -41,6 +42,7 @@ export async function createReview(previousState: PostReviewResult, formData: Fo
     
     const response = await postReview(result.data)
     if (response.statusCode === StatusCodes.CREATED) {
+        revalidatePath(`/books/${result.data.bookId}`)
         return { result: PostReviewResultType.SUCCEEDED, backendResponse: response }
     }
     return { result: PostReviewResultType.BACKEND_ERROR, backendResponse: response }
