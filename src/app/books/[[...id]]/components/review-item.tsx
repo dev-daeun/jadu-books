@@ -3,7 +3,7 @@ import styles  from "./review-item.module.css"
 import { ReviewItem as ReviewItemType } from "@/types/review"
 
 
-export default function ReviewItem({ id, bookId, author, content, createdAt }: ReviewItemType) {
+export default async function ReviewItem({ id, bookId, author, content, createdAt }: ReviewItemType) {
     return (
         <section className={styles.container}>
             <div className={styles.author}>{author}</div>
