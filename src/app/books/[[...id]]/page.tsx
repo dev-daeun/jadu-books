@@ -5,7 +5,7 @@ import { StatusCodes } from "http-status-codes";
 import styles from "./page.module.css"
 import { notFound } from "next/navigation";
 import BackendErrorMessage from "@/app/(searchbar)/components/backend-error-message";
-import ReviewEditor from "./review-editor";
+import ReviewEditor from "./components/review-editor";
 
 
 function BookDetail({ title, subTitle, description, author, publisher, coverImgUrl }: BookItem) {
