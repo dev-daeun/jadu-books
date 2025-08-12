@@ -36,3 +36,23 @@
     justify-content: flex-end;
     gap: 5px;
 }
+
+
+
+
+.input_area {
+    margin-bottom: 10px;
+}
+
+.input_area .author_warning_message {
+    color: rgb(246, 103, 103);
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+
+.input_area .content_warning_message {
+    color: rgb(246, 103, 103);
+    font-size: 12px;
+    margin-top: 0px;
+}
