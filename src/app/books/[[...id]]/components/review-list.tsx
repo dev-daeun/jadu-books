@@ -16,7 +16,7 @@ export default async function ReviewList({ bookId }: { bookId: number }) {
             )
         case StatusCodes.INTERNAL_SERVER_ERROR:
             return (
-                <p>리뷰를 불러오는 과정에서 오류가 발생했습니다.</p>
+                <p style={{color: "grey"}}>리뷰를 불러오는 과정에서 오류가 발생했습니다.</p>
             )
     }
 }
