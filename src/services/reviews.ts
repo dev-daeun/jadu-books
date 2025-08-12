@@ -8,7 +8,7 @@ import settings from "@/settings"
 import { revalidatePath } from "next/cache"
 
 
-async function postReview(review: Review): Promise<ApiResponse<Review | null>> {
+async function requestPostReview(review: Review): Promise<ApiResponse<Review | null>> {
     try {
         const response = await fetch(`${settings.backendBaseUrl}/review`, {
             method: "POST",
@@ -40,7 +40,7 @@ export async function createReview(previousState: PostReviewResult, formData: Fo
         return { result: PostReviewResultType.VALIDATION_FAILED, validationError: validationError }
     }
     
-    const response = await postReview(result.data)
+    const response = await requestPostReview(result.data)
     if (response.statusCode === StatusCodes.CREATED) {
         revalidatePath(`/books/${result.data.bookId}`)
         return { result: PostReviewResultType.SUCCEEDED, backendResponse: response }
@@ -61,4 +61,32 @@ export async function getReviews(bookId: number): Promise<ApiResponse<ReviewItem
         console.error("Error occurred while getting reviews: ", error)
         return { statusCode: StatusCodes.INTERNAL_SERVER_ERROR, data: [] }
     }
+}
+
+
+async function requestDeleteReview(reviewId: number): Promise<ApiResponse<null>> {
+    try {
+        const response = await fetch(new URL(`/review/${reviewId}`, settings.backendBaseUrl).toString(), {
+            method: "DELETE",
+        })
+        if (!response.ok) {
+            console.error(`Backend responded error: endpoint=${response.url} status=${response.status} body=${await response.text()}`)
+        }
+        return {statusCode: response.status as StatusCodes, data: null}
+    } catch (error) {
+        console.error("Error occurred while deleting review: ", error)
+        return { statusCode: StatusCodes.INTERNAL_SERVER_ERROR, data: null }
+    }
+}
+
+
+export async function deleteReviewAction(previousState: PostReviewResult, formData: FormData): Promise<PostReviewResult> {
+    const reviewId = Number(formData.get("reviewId"))
+    const bookId = Number(formData.get("bookId"))
+    const response = await requestDeleteReview(reviewId)
+    if (response.statusCode === StatusCodes.OK) {
+        revalidatePath(`/books/${bookId}`)
+        return { result: PostReviewResultType.SUCCEEDED, backendResponse: response }
+    }
+    return { result: PostReviewResultType.BACKEND_ERROR, backendResponse: response }
 }
