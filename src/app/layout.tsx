@@ -3,8 +3,10 @@ import style from "./layout.module.css"
 
 export default function RootLayout({
   children,
+  modal,
 }: Readonly<{
   children: React.ReactNode;
+  modal: React.ReactNode;
 }>) {
   return (
     <html>
@@ -14,6 +16,7 @@ export default function RootLayout({
             <h3>자두북스</h3>
           </header>
           <main className={style.main}>{children}</main>
+          {modal}
           <footer className={style.footer}><p>made by @dev-daeun</p></footer>
         </div>
         <div id="modal-root"></div>  {/* 모달 컴포넌트 렌더링 위치 */}
