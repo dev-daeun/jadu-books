@@ -3,10 +3,21 @@
 import { useEffect, useRef } from "react"
 import { createPortal } from "react-dom"
 import styles from "./modal.module.css"
+import { useRouter } from "next/navigation"
 
 
 export default function Modal({ children }: { children: React.ReactNode }) {
     const dialogRef = useRef<HTMLDialogElement>(null)
+    const router = useRouter()
+    const onClose = () => {
+        router.back()
+    }
+    const onClick = (e: React.MouseEvent<HTMLDialogElement>) => {
+        if ((e.target as HTMLElement).nodeName === "DIALOG") {  // 모달창 바깥 클릭 시 nodeName === "DIALOG"
+            router.back()
+        }
+    }
+
     useEffect(() => {
         if (dialogRef.current && !dialogRef.current.open) {
             dialogRef.current.showModal()
@@ -15,5 +26,13 @@ export default function Modal({ children }: { children: React.ReactNode }) {
             })
         }
     }, [])
-    return createPortal(<dialog ref={dialogRef} className={styles.modal}>{children}</dialog>, document.getElementById("modal-root") as HTMLElement)
+    return createPortal(
+        <dialog onClick={onClick} onClose={onClose} ref={dialogRef} className={styles.modal}>
+            {children}
+            <form method="dialog">
+                <button>닫기</button>
+            </form>
+        </dialog>, 
+        document.getElementById("modal-root") as HTMLElement
+    )
 }
