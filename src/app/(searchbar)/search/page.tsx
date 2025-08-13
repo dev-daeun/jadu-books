@@ -1,11 +1,11 @@
 import { fetchAllBooks } from "@/services/books";
-import BookItemComponent from "../components/book-item";
+import BookItemComponent from "../../books/components/book-item";
 import { BookItem } from "@/types/book-item";
 import ApiResponse from "@/types/api-response";
 import { StatusCodes } from "http-status-codes";
 import { Suspense } from "react";
-import BookListSkeleton from "../components/book-list-skeleton";
-import BackendErrorMessage from "../components/backend-error-message";
+import BookListSkeleton from "../../books/components/book-list-skeleton";
+import BackendErrorMessage from "../../books/components/backend-error-message";
 
 
 async function SearchResult({ q }: { q?: string }) {
