@@ -16,6 +16,7 @@ export default function RootLayout({
           <main className={style.main}>{children}</main>
           <footer className={style.footer}><p>made by @dev-daeun</p></footer>
         </div>
+        <div id="modal-root"></div>  {/* 모달 컴포넌트 렌더링 위치 */}
       </body>
     </html>
   )
