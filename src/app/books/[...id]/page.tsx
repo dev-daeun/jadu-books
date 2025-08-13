@@ -4,7 +4,7 @@ import { BookItem } from "@/types/book-item";
 import { StatusCodes } from "http-status-codes";
 import styles from "./page.module.css"
 import { notFound } from "next/navigation";
-import BackendErrorMessage from "@/app/(searchbar)/components/backend-error-message";
+import BackendErrorMessage from "@/app/books/components/backend-error-message";
 import ReviewEditor from "./components/review-editor";
 import ReviewList from "./components/review-list";
 
@@ -29,14 +29,15 @@ function BookDetail({ title, subTitle, description, author, publisher, coverImgU
 
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
     const { id } = await params;
-    const response: ApiResponse<BookItem | null> = await fetchBook(Number(id))
+    const bookId = Number(id[0])
+    const response: ApiResponse<BookItem | null> = await fetchBook(bookId)
     switch (response.statusCode) {
         case StatusCodes.OK:
             return (
                 <div className={styles.container}>
                     <BookDetail {...response.data as BookItem}/>
-                    <ReviewEditor bookId={Number(id)} />
-                    <ReviewList bookId={Number(id)} />
+                    <ReviewEditor bookId={bookId} />
+                    <ReviewList bookId={bookId} />
                 </div>
             )
         case StatusCodes.NOT_FOUND:
