@@ -23,6 +23,21 @@ async function SearchResult({ q }: { q?: string }) {
 }
 
 
+export async function generateMetadata({ searchParams }: { searchParams: Promise<{ q?: string }> }) {
+  // 검색 페이지의 메타데이터를 동적으로 생성하는 함수
+  const { q } = await searchParams;
+  return {
+    title: `"${q}" : 자두북스 검색 결과`,
+    description: `"${q}" 자두북스 검색 결과`,
+    openGraph: {
+      title: `"${q}" : 자두북스 검색 결과`,
+      description: `"${q}" 자두북스 검색 결과`,
+      images: ["/thumbnail.png"]
+    }
+  }
+}
+
+
 export default async function Page({ searchParams }: { searchParams: Promise<{ q: string }> }) {
     const { q } = await searchParams;
     return (
