@@ -1,36 +1,39 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Next.js로 구축한 책 관리 웹 애플리케이션 ['자두북스'](https://books.dev-daeun.com/)
 
-## Getting Started
+도서 목록을 조회하고 리뷰를 등록/삭제 할 수 있습니다
 
-First, run the development server:
+### 사용한 기술
+* typescript@5.8.3
+* next@15.4.5
+* react@19.1.0
+* zod@4.0.17
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 주요 기능
+#### 1. 추천 도서 목록 조회
+![추천도서](./images/추천도서.png)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+#### 2. 전체 도서 목록 조회
+![모든도서](./images/모든도서.png)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+#### 3. 도서 검색
+![도서검색](./images/도서검색.png)
 
-## Learn More
+#### 4. 도서 상세 정보(저자, 출판사, 설명) 조회
+![도서상세](./images/도서상세.png)
 
-To learn more about Next.js, take a look at the following resources:
+#### 5. 도서의 리뷰 목록 조회
+![리뷰목록](./images/리뷰목록.png)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+#### 6. 도서 리뷰 등록
+![리뷰등록](./images/리뷰등록.png)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+#### 7. 도서 리뷰 삭제
+![리뷰삭제](./images/리뷰삭제.png)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 향후 개선/적용해보고 싶은 것
+* 비즈니스 로직 담당하는 백엔드에서 응답 지연 시 모달 창에 suspense 적용
+* 사용자 인증
+* 도서 목록 페이지네이션
