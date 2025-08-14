@@ -7,13 +7,14 @@ import { notFound } from "next/navigation";
 import BackendErrorMessage from "@/app/books/components/backend-error-message";
 import ReviewEditor from "./components/review-editor";
 import ReviewList from "./components/review-list";
+import Image from "next/image";
 
 
 function BookDetail({ title, subTitle, description, author, publisher, coverImgUrl }: BookItem) {
     return (
         <section >
             <div className={styles.cover_img_container} style={{ backgroundImage: `url('${coverImgUrl}')` }}>
-                <img src={coverImgUrl}/>
+                <Image src={coverImgUrl} alt={title} width={240} height={300} />
             </div>
             <div className={styles.title}>{title}</div>
             <div className={styles.subTitle}>{subTitle}</div>
