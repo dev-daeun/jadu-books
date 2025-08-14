@@ -8,6 +8,13 @@ import BackendErrorMessage from "@/app/books/components/backend-error-message";
 import ReviewEditor from "./components/review-editor";
 import ReviewList from "./components/review-list";
 import Image from "next/image";
+import { fetchAllBooks } from "@/services/books";
+
+
+export async function generateStaticParams() {
+  const response: ApiResponse<BookItem[]> = await fetchAllBooks()
+  return response.data.map((book) => ({ id: [book.id.toString()] }))
+}
 
 
 function BookDetail({ title, subTitle, description, author, publisher, coverImgUrl }: BookItem) {
