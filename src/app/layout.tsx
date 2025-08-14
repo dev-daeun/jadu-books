@@ -1,5 +1,8 @@
 import "./globals.css";
 import style from "./layout.module.css"
+import Image from "next/image";
+import Link from "next/link";
+
 
 export default function RootLayout({
   children,
@@ -13,7 +16,12 @@ export default function RootLayout({
       <body>
         <div className={style.container}>
           <header className={style.header}>
-            <h3>자두북스</h3>
+            <Link className={style.link} href="/">
+              <div className={style.banner}>
+                <Image src="/thumbnail.png" alt="자두북스" width={26} height={26} />
+                <span>자두북스</span>
+              </div>
+            </Link>
           </header>
           <main className={style.main}>{children}</main>
           {modal}
