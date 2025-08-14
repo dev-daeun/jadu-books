@@ -25,7 +25,22 @@ function BookDetail({ title, subTitle, description, author, publisher, coverImgU
 }
 
 
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const bookId = Number(id[0])
 
+  // request memoization 으로 인해 도서 상세페이지 내에서는 벡엔드에 중복요청 발생하지 않음
+  const response: ApiResponse<BookItem | null> = await fetchBook(bookId)
+  return {
+    title: `${response.data?.title} : 자두북스`,
+    description: `${response.data?.title} 자두북스 도서 상세 페이지`,
+    openGraph: {
+      title: `${response.data?.title} : 자두북스`,
+      description: `${response.data?.title} 자두북스 도서 상세 페이지`,
+      images: [response.data?.coverImgUrl]
+    }
+  }
+}
 
 
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
