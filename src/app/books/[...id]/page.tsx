@@ -6,7 +6,7 @@ import styles from "./page.module.css"
 import { notFound } from "next/navigation";
 import BackendErrorMessage from "@/app/books/components/backend-error-message";
 import ReviewEditor from "./components/review-editor";
-// import ReviewList from "./components/review-list";
+import ReviewList from "./components/review-list";
 import Image from "next/image";
 import { fetchAllBooks } from "@/services/books";
 
@@ -58,7 +58,7 @@ export default async function Page({ params }: { params: { id: string[] } }) {
                 <div className={styles.container}>
                     <BookDetail {...response.data as BookItem}/>
                     <ReviewEditor bookId={bookId} />
-                    {/* <ReviewList bookId={bookId} /> */}
+                    <ReviewList bookId={bookId} />
                 </div>
             )
         case StatusCodes.NOT_FOUND:
