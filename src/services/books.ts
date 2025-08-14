@@ -14,7 +14,7 @@ export async function fetchAllBooks(q?: string): Promise<ApiResponse<BookItem[]>
         url.searchParams.append("q", q)
     }
     try {
-        const response = await fetch(url, { cache: "no-store" })
+        const response = await fetch(url, { next: { revalidate: 30 } })
         if (!response.ok) {
             console.error(`Backend responded error: endpoint=${response.url} status=${response.status} body=${await response.text()}`)
             return { statusCode: response.status as StatusCodes, data: [] }
@@ -31,7 +31,7 @@ export async function fetchAllBooks(q?: string): Promise<ApiResponse<BookItem[]>
 export async function fetchRecommendedBooks (): Promise<ApiResponse<BookItem[]>> {
   const url = new URL("/book/random", settings.backendBaseUrl).toString()
     try {
-        const response = await fetch(url, { cache: "no-store" })
+        const response = await fetch(url,  { next: { revalidate: 30 } })
         if (!response.ok) {
             console.error(`Backend responded error: endpoint=${response.url} status=${response.status} body=${await response.text()}`)
             return { statusCode: response.status as StatusCodes, data: [] }
