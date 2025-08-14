@@ -7,6 +7,15 @@ import { useRouter } from "next/navigation"
 
 
 export default function Modal({ children }: { children: React.ReactNode }) {
+    console.log("### create modal start : ", new Date().toLocaleString('ko-KR', {
+        timeZone: 'Asia/Seoul',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      }));
     const dialogRef = useRef<HTMLDialogElement>(null)
     const router = useRouter()
     const onClose = () => {
@@ -26,13 +35,27 @@ export default function Modal({ children }: { children: React.ReactNode }) {
             })
         }
     }, [])
-    return createPortal(
+
+    const modalRoot = document.getElementById("modal-root") as HTMLElement
+    const form = (
         <dialog onClick={onClick} onClose={onClose} ref={dialogRef} className={styles.modal}>
             {children}
             <form method="dialog">
                 <button>닫기</button>
             </form>
-        </dialog>, 
-        document.getElementById("modal-root") as HTMLElement
+        </dialog>
+    )
+    console.log("### create modal end : ", new Date().toLocaleString('ko-KR', {
+        timeZone: 'Asia/Seoul',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      }));
+    return createPortal(
+         form,
+        modalRoot,
     )
 }
