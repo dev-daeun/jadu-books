@@ -48,7 +48,7 @@ export async function fetchRecommendedBooks (): Promise<ApiResponse<BookItem[]>>
 export async function fetchBook(id: number): Promise<ApiResponse<BookItem | null>> {
     const url = new URL(`/book/${id}`, settings.backendBaseUrl).toString()
     try {
-        const response = await fetch(url, { next: { revalidate: 24 * 60 * 60 } })
+        const response = await fetch(url)
         if (!response.ok) {
             console.error(`Backend responded error: endpoint=${response.url} status=${response.status} body=${await response.text()}`)
             return { statusCode: response.status as StatusCodes, data: null }

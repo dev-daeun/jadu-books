@@ -53,7 +53,7 @@ export async function getReviews(bookId: number): Promise<ApiResponse<ReviewItem
     try {
         const response = await fetch(
             new URL(`/review/book/${bookId}`, settings.backendBaseUrl).toString(),
-            { next: { tags: [`review-list-${bookId}`], revalidate: 24 * 60 * 60 }}
+            { next: { tags: [`review-list-${bookId}`] }}
         )
         if (!response.ok) {
             console.error(`Backend responded error: endpoint=${response.url} status=${response.status} body=${await response.text()}`)
