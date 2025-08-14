@@ -8,6 +8,7 @@ export default function InterceptingPage(props: any) {
         ...props,
         params: { id: [props?.params?.id].filter(Boolean) }
     }
+    console.log("#### modal loading............")
     return (
         <Modal>
             <Page {...adaptedProps} />
