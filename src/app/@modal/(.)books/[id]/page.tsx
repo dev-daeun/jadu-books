@@ -1,5 +1,5 @@
 // 도서 상세페이지 인터셉팅
-// import Modal from "@/app/books/[...id]/components/modal"
+import Modal from "@/app/books/[...id]/components/modal"
 import Page from "@/app/books/[...id]/page"
 
 
@@ -9,6 +9,9 @@ export default function InterceptingPage(props: any) {
         params: { id: [props?.params?.id].filter(Boolean) }
     }
     return (
-        <Page {...adaptedProps} />
+        <Modal>
+            <Page {...adaptedProps} />
+        </Modal>
+        
     )
 }
