@@ -1,6 +1,10 @@
 ## Next.js로 구축한 책 관리 웹 애플리케이션 ['자두북스'](https://books.dev-daeun.com/)
 
-도서 목록을 조회하고 리뷰를 등록/삭제 할 수 있습니다
+
+### 프로젝트 소개
+* 인프런 강의 [[한 입 크기로 잘라먹는 Next.js]](https://www.inflearn.com/course/%ED%95%9C%EC%9E%85-%ED%81%AC%EA%B8%B0-nextjs) 를 학습하며 만들었습니다
+* 도서 목록을 조회하고 리뷰를 등록/삭제 할 수 있습니다
+
 
 ### 사용한 기술
 * typescript@5.8.3
