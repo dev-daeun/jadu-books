@@ -50,9 +50,8 @@ function ReviewEditorForm(
 }
 
 
-export default function ReviewEditor({ bookId }: { bookId: number }) {
-    const { data } = useSession()
-    const [input, setInput] = useState({author: data?.user?.name || "", content: ""})
+export default function ReviewEditor({ bookId, author}: { bookId: number, author: string }) {
+    const [input, setInput] = useState({ author: author, content: ""})
     const [state, formAction, isPending] = useActionState(createReviewAction, { result: FormSubmitResultType.INITIAL });
     const onChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
         setInput({
@@ -71,7 +70,7 @@ export default function ReviewEditor({ bookId }: { bookId: number }) {
                 <ReviewEditorForm formAction={formAction} bookId={bookId} input={input} state={state} onChange={onChange} isPending={isPending} resultMessage="리뷰가 작성되었습니다 🎉"/>
             </>
         default:
-            if (data?.user) {
+            if (author) {
                 return <ReviewEditorForm formAction={formAction} bookId={bookId} input={input} state={state} onChange={onChange} isPending={isPending}/>
             } else {
                 return (
