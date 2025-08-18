@@ -5,7 +5,7 @@ import { createReviewAction } from "@/services/reviews";
 import { PostReviewResult } from "@/types/review";
 import { FormSubmitResultType } from "@/types/form-submit";
 import styles from "./review-editor.module.css"
-import { signIn, useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 
 
 function ReviewEditorForm(
