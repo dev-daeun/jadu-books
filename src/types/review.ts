@@ -4,10 +4,7 @@ import { FormSubmitResultType } from "./form-submit"
 
 
 export const reviewSchema = z.object({
-  author: z.string()
-    .min(2, '작성자명은 최소 2글자 이상이어야 합니다.')
-    .max(8, '작성자명은 최대 8글자까지 가능합니다.'),
-  
+  author: z.string(),
   content: z.string()
     .min(10, '리뷰는 최소 10글자 이상이어야 합니다.')
     .max(200, '리뷰는 최대 200글자까지 가능합니다.'),

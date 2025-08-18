@@ -5,6 +5,7 @@ import { createReviewAction } from "@/services/reviews";
 import { PostReviewResult } from "@/types/review";
 import { FormSubmitResultType } from "@/types/form-submit";
 import styles from "./review-editor.module.css"
+import { signIn, useSession } from "next-auth/react";
 
 
 function ReviewEditorForm(
@@ -27,15 +28,13 @@ function ReviewEditorForm(
         resultMessage?: string,
     }
 ) {
-
     return (
         <section className={styles.form_container}>
             <form action={formAction}>
                 <input name="bookId" value={bookId} readOnly hidden/>
 
                 <div className={styles.input_area}>
-                    <input name="author" value={input.author} onChange={onChange} disabled={isPending} placeholder="작성자 명" required/>
-                    {state.validationError?.author ?  <p className={styles.author_warning_message}>{state.validationError?.author}</p> : ""}
+                    <input name="author" value={input.author} disabled={isPending} placeholder="작성자 명" required readOnly/>
                 </div>
 
                 <div className={styles.input_area}>
@@ -48,12 +47,12 @@ function ReviewEditorForm(
             {resultMessage ? <h4>{resultMessage}</h4> : null}
         </section>
     )
-
 }
 
 
 export default function ReviewEditor({ bookId }: { bookId: number }) {
-    const [input, setInput] = useState({author: "", content: ""})
+    const { data } = useSession()
+    const [input, setInput] = useState({author: data?.user?.name || "", content: ""})
     const [state, formAction, isPending] = useActionState(createReviewAction, { result: FormSubmitResultType.INITIAL });
     const onChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
         setInput({
@@ -61,6 +60,7 @@ export default function ReviewEditor({ bookId }: { bookId: number }) {
             [e.target.name]: e.target.value,
         });
     }
+
     switch (state.result) {
         case FormSubmitResultType.BACKEND_ERROR:
             return <>
@@ -71,7 +71,16 @@ export default function ReviewEditor({ bookId }: { bookId: number }) {
                 <ReviewEditorForm formAction={formAction} bookId={bookId} input={input} state={state} onChange={onChange} isPending={isPending} resultMessage="리뷰가 작성되었습니다 🎉"/>
             </>
         default:
-            return <ReviewEditorForm formAction={formAction} bookId={bookId} input={input} state={state} onChange={onChange} isPending={isPending}/>
+            if (data?.user) {
+                return <ReviewEditorForm formAction={formAction} bookId={bookId} input={input} state={state} onChange={onChange} isPending={isPending}/>
+            } else {
+                return (
+                    <>
+                        <h3>로그인 후 리뷰를 작성해주세요</h3>
+                        <button onClick={() => signIn('ByUsername')}>로그인</button>
+                    </>
+                )
+            }
 
     }
 }
