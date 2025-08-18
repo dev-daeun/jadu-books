@@ -23,5 +23,5 @@ export async function signUpAction(previousState: SignUpResult, formData: FormDa
         password: result.data.password,
         redirect: false,
     })
-    return { result: FormSubmitResultType.SUCCEEDED, data: {id: 1, username: result.data.username, password: result.data.password} }
+    return { result: FormSubmitResultType.SUCCEEDED, data: {id: "1", name: result.data.username } }
 }

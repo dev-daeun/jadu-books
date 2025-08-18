@@ -1,42 +1,41 @@
-import { signUpSchema } from "@/types/user"
 import NextAuth from "next-auth"
 import CredentialsProvider from "next-auth/providers/credentials"
 
 
-
-
-const providers = [
-  CredentialsProvider({
-    name: "Credentials",
-    credentials: {
-      username: { label: "Username", type: "text", placeholder: "아이디를 입력하세요" },
-      password: { label: "Password", type: "password", placeholder: "비밀번호를 입력하세요" },
-      confirmPassword: { label: "Confirm Password", type: "password", placeholder: "비밀번호를 다시 입력하세요" },
-
-    },
-    authorize: async (credentials) => {
-      const result = signUpSchema.safeParse({
-        username: credentials?.username,
-        password: credentials?.password,
-        confirmPassword: credentials?.confirmPassword,
-      })
-      if (!result.success) {
+const handler = NextAuth({ 
+  providers: [
+    CredentialsProvider({
+      name: "Credentials",
+      credentials: {
+        username: { label: "Username", type: "text" },
+        password: { label: "Password", type: "password" },
+      },
+      authorize: async (credentials) => {
+        console.log("AUTHORIZE : ", credentials)
+        if (credentials?.username && credentials?.password) {
+          return { 
+            id: "1", 
+            name: credentials.username,
+          }
+        }
         return null
-      }
-      else if (result.data.password != result.data.confirmPassword) {
-        return null
-      }
-      else {
-        const user = {id: "1", name: result.data.username}
-        return user
-      }
+      },
+    })
+  ],
+  callbacks: {
+    signIn: async ({ user, account, profile, email, credentials }) => {
+      console.log("SIGN IN : ", user, account, profile, email, credentials)
+      return true
     },
-  })
-]
-
-
-const handler =  NextAuth({ providers })
-
+    session: async ({ session, token }) => {
+      console.log("SESSION : ", session, token)
+      return session
+    }
+  },
+  pages: {
+    signIn: '/auth/signin',
+  }
+})
 
 export { handler as GET, handler as POST }
 
