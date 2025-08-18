@@ -71,7 +71,10 @@ export default function SignUp({ csrfToken }: { csrfToken: string }) {
     }
     switch (state.result) {
         case FormSubmitResultType.SUCCEEDED:
-            window.location.href = "/"
+            return <>
+                <h3>회원가입이 완료되었습니다</h3>
+                <button onClick={() => window.location.href = "/"}>메인페이지로 이동하기</button>
+            </>
         default:
             return <SignUpForm formAction={formAction} csrfToken={csrfToken} input={input} state={state} onChange={onChange} isPending={isPending}/>
 
