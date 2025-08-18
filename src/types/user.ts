@@ -3,7 +3,8 @@ import { FormSubmitResultType } from "./form-submit"
 import { User } from "next-auth"
 
 
-export const signUpSchema = z.object({
+
+const signInValidation = {
     username: z.string()
     .min(2, '아이디는 최소 2글자 이상이어야 합니다')
     .max(10, '아이디는 최대 10글자까지 가능합니다')
@@ -28,19 +29,39 @@ export const signUpSchema = z.object({
       (password) => /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password),
       '특수문자를 최소 1개 이상 포함해야 합니다'
     ),
+}
 
-    confirmPassword: z.string()
+export const signInSchema = z.object(signInValidation)
+
+export const signUpSchema = z.object({
+  ...signInValidation,
+  confirmPassword: z.string(),
 }).refine(data => data.password === data.confirmPassword, {
     message: "비밀번호가 일치하지 않습니다",
     path: ["confirmPassword"],
 })
 
 export type SignUpSchemaKeys = keyof z.infer<typeof signUpSchema>
-export type SignUpValidationError = Partial<Record<SignUpSchemaKeys, string>>
+export type SignInSchemaKeys = keyof z.infer<typeof signInSchema>
 
+export type SignUpValidationError = Partial<Record<SignUpSchemaKeys, string>>
+export type SignInValidationError = Partial<Record<SignInSchemaKeys, string>>
+
+
+export type SignInUser = {
+    id: string,
+    username: string,
+    password: string,
+}
 
 export type SignUpResult = {
-    result: FormSubmitResultType,
-    validationError?: SignUpValidationError,
-    data?: User,
+  result: FormSubmitResultType,
+  validationError?: SignUpValidationError,
+  data?: SignInUser,
+}
+
+export type SignInResult = {
+  result: FormSubmitResultType,
+  validationError?: SignInValidationError,
+  data?: SignInUser,
 }

@@ -1,0 +1,43 @@
+.form_container {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+
+.form_container input {
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid rgb(220, 220, 220);
+    border-radius: 5px;
+}
+
+.form_container .activated_button {
+    width: 80px;
+    padding: 10px;
+    background-color: rgb(255, 140, 0);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.form_container .deactivated_button {
+    width: 80px;
+    padding: 10px;
+    background-color: grey;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.input_area {
+    margin-bottom: 10px;
+}
+
+.input_area .warning_message {
+    color: rgb(246, 103, 103);
+    font-size: 12px;
+    margin-top: 5px;
+}
