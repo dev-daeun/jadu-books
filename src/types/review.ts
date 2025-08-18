@@ -1,5 +1,6 @@
 import { z } from "zod"
 import ApiResponse from "./api-response"
+import { FormSubmitResultType } from "./form-submit"
 
 
 export const reviewSchema = z.object({
@@ -25,14 +26,8 @@ export type ReviewSchemaKeys = keyof z.infer<typeof reviewSchema>
 export type ReviewValidationError = Partial<Record<ReviewSchemaKeys, string>>
 
 
-export enum PostReviewResultType {
-  INITIAL,
-  VALIDATION_FAILED,
-  BACKEND_ERROR,
-  SUCCEEDED
-}
 export type PostReviewResult = {
-  result: PostReviewResultType,
+  result: FormSubmitResultType,
   validationError?: ReviewValidationError,
   backendResponse?: ApiResponse<Review | null>
 }

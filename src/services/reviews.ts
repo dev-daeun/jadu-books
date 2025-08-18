@@ -2,10 +2,11 @@
 
 
 import ApiResponse from "@/types/api-response"
-import { PostReviewResult, PostReviewResultType, Review, reviewSchema, ReviewSchemaKeys, ReviewValidationError, ReviewItem } from "@/types/review"
+import { PostReviewResult, Review, reviewSchema, ReviewSchemaKeys, ReviewValidationError, ReviewItem } from "@/types/review"
 import { StatusCodes } from "http-status-codes"
 import settings from "@/settings"
 import { revalidateTag } from "next/cache"
+import { FormSubmitResultType } from "@/types/form-submit"
 
 
 async function requestPostReview(review: Review): Promise<ApiResponse<Review | null>> {
@@ -37,15 +38,15 @@ export async function createReviewAction(previousState: PostReviewResult, formDa
         for (const err of result.error.issues) {
             validationError[err.path[0] as ReviewSchemaKeys] = err.message
         }
-        return { result: PostReviewResultType.VALIDATION_FAILED, validationError: validationError }
+        return { result: FormSubmitResultType.VALIDATION_FAILED, validationError: validationError }
     }
     
     const response = await requestPostReview(result.data)
     if (response.statusCode === StatusCodes.CREATED) {
         revalidateTag(`review-list-${result.data.bookId}`)
-        return { result: PostReviewResultType.SUCCEEDED, backendResponse: response }
+        return { result: FormSubmitResultType.SUCCEEDED, backendResponse: response }
     }
-    return { result: PostReviewResultType.BACKEND_ERROR, backendResponse: response }
+    return { result: FormSubmitResultType.BACKEND_ERROR, backendResponse: response }
 }
 
 
@@ -89,7 +90,7 @@ export async function deleteReviewAction(previousState: PostReviewResult, formDa
     const response = await requestDeleteReview(reviewId)
     if (response.statusCode === StatusCodes.OK) {
         revalidateTag(`review-list-${bookId}`)
-        return { result: PostReviewResultType.SUCCEEDED, backendResponse: response }
+        return { result: FormSubmitResultType.SUCCEEDED, backendResponse: response }
     }
-    return { result: PostReviewResultType.BACKEND_ERROR, backendResponse: response }
+    return { result: FormSubmitResultType.BACKEND_ERROR, backendResponse: response }
 }
