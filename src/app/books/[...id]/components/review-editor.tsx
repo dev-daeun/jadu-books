@@ -2,7 +2,8 @@
 
 import { useActionState, useState } from "react";
 import { createReviewAction } from "@/services/reviews";
-import { PostReviewResult, PostReviewResultType } from "@/types/review";
+import { PostReviewResult } from "@/types/review";
+import { FormSubmitResultType } from "@/types/form-submit";
 import styles from "./review-editor.module.css"
 
 
@@ -53,7 +54,7 @@ function ReviewEditorForm(
 
 export default function ReviewEditor({ bookId }: { bookId: number }) {
     const [input, setInput] = useState({author: "", content: ""})
-    const [state, formAction, isPending] = useActionState(createReviewAction, { result: PostReviewResultType.INITIAL });
+    const [state, formAction, isPending] = useActionState(createReviewAction, { result: FormSubmitResultType.INITIAL });
     const onChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
         setInput({
             ...input,
@@ -61,11 +62,11 @@ export default function ReviewEditor({ bookId }: { bookId: number }) {
         });
     }
     switch (state.result) {
-        case PostReviewResultType.BACKEND_ERROR:
+        case FormSubmitResultType.BACKEND_ERROR:
             return <>
                 <ReviewEditorForm formAction={formAction} bookId={bookId} input={input} state={state} onChange={onChange} isPending={isPending} resultMessage="리뷰 작성 과정에서 오류가 발생했습니다"/>
             </>
-        case PostReviewResultType.SUCCEEDED:
+        case FormSubmitResultType.SUCCEEDED:
             return <>
                 <ReviewEditorForm formAction={formAction} bookId={bookId} input={input} state={state} onChange={onChange} isPending={isPending} resultMessage="리뷰가 작성되었습니다 🎉"/>
             </>

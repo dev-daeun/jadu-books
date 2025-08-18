@@ -2,17 +2,17 @@
 
 
 import { useActionState, useRef } from "react"
-import { PostReviewResultType } from "@/types/review"
+import { FormSubmitResultType } from "@/types/form-submit"
 import { deleteReviewAction } from "@/services/reviews"
 import { useEffect } from "react"
 
 
 export default function ReviewDelete({ reviewId, bookId }: { reviewId: number, bookId: number }) {
-    const [state, formAction, isPending] = useActionState(deleteReviewAction, { result: PostReviewResultType.INITIAL });
+    const [state, formAction, isPending] = useActionState(deleteReviewAction, { result: FormSubmitResultType.INITIAL });
     const formRef = useRef<HTMLFormElement>(null)
 
     useEffect(() => {
-        if (state.result === PostReviewResultType.BACKEND_ERROR) {
+        if (state.result === FormSubmitResultType.BACKEND_ERROR) {
             alert("리뷰 삭제 과정에서 오류가 발생했습니다.")
         }
     }, [state])
