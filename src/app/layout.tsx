@@ -3,22 +3,19 @@ import style from "./layout.module.css"
 import Image from "next/image";
 import Link from "next/link";
 import SessionComponent from "./session";
-import { Session } from "next-auth";
-import getUserSessionFromServer from "./util/server-session";
 import AuthBanner from "./auth-banner";
-import { SignInUser } from "@/types/user";
+import { Session, User } from "next-auth";
+import { getServerSession } from "next-auth";
 
 
 export default async function RootLayout({
   children,
   modal,
-  session,
 }: Readonly<{
   children: React.ReactNode;
   modal: React.ReactNode;
-  session: Session;
 }>) {
-  const user: SignInUser | null = await getUserSessionFromServer()
+  const session: Session | null = await getServerSession()
   return (
       <html>
         <body>
@@ -29,7 +26,7 @@ export default async function RootLayout({
                   <div className={style.banner}>
                     <Image src="/thumbnail.png" alt="자두북스" width={26} height={26} />
                     <span>자두북스</span>
-                    <AuthBanner user={user} />
+                    <AuthBanner user={session?.user as User | undefined} />
                   </div>
                 </Link>
               </header>

@@ -1,6 +1,6 @@
 import { z } from "zod"
-import ApiResponse from "./api-response"
 import { FormSubmitResultType } from "./form-submit"
+import { User } from "next-auth"
 
 
 export const signUpSchema = z.object({
@@ -38,17 +38,9 @@ export const signUpSchema = z.object({
 export type SignUpSchemaKeys = keyof z.infer<typeof signUpSchema>
 export type SignUpValidationError = Partial<Record<SignUpSchemaKeys, string>>
 
-export interface SignInUser {
-  id: number;
-  username: string;
-}
-
-export interface SignUpUser extends SignInUser {
-  password: string;
-}
 
 export type SignUpResult = {
     result: FormSubmitResultType,
     validationError?: SignUpValidationError,
-    data?: SignUpUser,
+    data?: User,
 }

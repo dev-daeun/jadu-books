@@ -1,10 +1,10 @@
 "use client"
 
-import { SignInUser } from "@/types/user"
+import { User } from "next-auth"
 import { signIn, signOut } from "next-auth/react"
 
 
-export default function AuthBanner({user}: {user: SignInUser | null}) {
+export default function AuthBanner({user}: {user: User | undefined }) {
     if (user) {
         return <div onClick={() => signOut()}>로그아웃</div>
     }
