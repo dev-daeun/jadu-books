@@ -7,6 +7,7 @@ import { SignUpResult } from "@/types/user";
 
 import { useActionState, useState } from "react";
 import styles from "./signup-form.module.css"
+import { signIn } from "next-auth/react";
 
 
 function SignUpForm(
@@ -62,21 +63,24 @@ function SignUpForm(
 export default function SignUp({ csrfToken }: { csrfToken: string }) {
     const [input, setInput] = useState({username: "", password: "", confirmPassword: ""})
     const [state, formAction, isPending] = useActionState(signUpAction, { result: FormSubmitResultType.INITIAL });
-
     const onChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
         setInput({
             ...input,
             [e.target.name]: e.target.value,
         });
     }
+
     switch (state.result) {
         case FormSubmitResultType.SUCCEEDED:
-            return <>
-                <h3>회원가입이 완료되었습니다</h3>
-                <button onClick={() => window.location.href = "/"}>메인페이지로 이동하기</button>
-            </>
+            signIn('credentials', {
+                id: 1,
+                username: state.data!.username,
+                password: state.data!.password,
+                redirect: false,
+            }).then(() => {
+                window.location.href = "/"
+            })
         default:
             return <SignUpForm formAction={formAction} csrfToken={csrfToken} input={input} state={state} onChange={onChange} isPending={isPending}/>
-
     }
 }
