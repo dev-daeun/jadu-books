@@ -78,6 +78,7 @@ export default function SignUp({ csrfToken }: { csrfToken: string }) {
                 password: state.data!.password,
                 redirect: false,
             }).then(() => {
+                alert("회원가입이 완료되었습니다")
                 window.location.href = "/"
             })
         default:
