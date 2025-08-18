@@ -3,7 +3,7 @@ import style from "./layout.module.css"
 import Image from "next/image";
 import Link from "next/link";
 import SessionComponent from "./session";
-import { Session } from "inspector";
+import { Session } from "next-auth";
 import AuthBtn from "./api/auth/[...nextauth]/buttons";
 
 
