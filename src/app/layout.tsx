@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import SessionComponent from "./session";
 import { Session } from "inspector";
-import AuthBtn from "./auth-btn";
+import AuthBtn from "./api/auth/[...nextauth]/buttons";
 
 
 export default function RootLayout({
