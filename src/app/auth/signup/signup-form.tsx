@@ -7,8 +7,6 @@ import { SignUpResult } from "@/types/user";
 
 import { useActionState, useState } from "react";
 import styles from "./signup-form.module.css"
-import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react";
 
 
 function SignUpForm(
@@ -64,7 +62,6 @@ function SignUpForm(
 export default function SignUp({ csrfToken }: { csrfToken: string }) {
     const [input, setInput] = useState({username: "", password: "", confirmPassword: ""})
     const [state, formAction, isPending] = useActionState(signUpAction, { result: FormSubmitResultType.INITIAL });
-    const router = useRouter()
 
     const onChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
         setInput({
@@ -74,14 +71,7 @@ export default function SignUp({ csrfToken }: { csrfToken: string }) {
     }
     switch (state.result) {
         case FormSubmitResultType.SUCCEEDED:
-            signIn('credentials', {
-                id: state.data!.id,
-                username: state.data!.username,
-                password: state.data!.password,
-                redirect: false
-            }).then(() => {
-                router.back();
-            });
+            window.location.href = "/"
         default:
             return <SignUpForm formAction={formAction} csrfToken={csrfToken} input={input} state={state} onChange={onChange} isPending={isPending}/>
 
