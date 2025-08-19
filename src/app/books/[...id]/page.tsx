@@ -33,8 +33,7 @@ function BookDetail({ title, subTitle, description, author, publisher, coverImgU
 
 
 export async function generateMetadata({ params }: { params: { id: string[] } }) {
-  const { id } = await params
-  const bookId = Number(id[0])
+  const bookId = Number(params.id[0])
 
   // request memoization 으로 인해 도서 상세페이지 내에서는 벡엔드에 중복요청 발생하지 않음
   const response: ApiResponse<BookItem | null> = await fetchBook(bookId)
@@ -51,9 +50,8 @@ export async function generateMetadata({ params }: { params: { id: string[] } })
 
 
 export default async function Page({ params }: { params: { id: string[] } }) {
-  const { id } = await params
-  const bookId = Number(id[0])
-  const response: ApiResponse<BookItem | null> = await fetchBook(bookId)
+    const bookId = Number(params.id[0])
+    const response: ApiResponse<BookItem | null> = await fetchBook(bookId)
   
     switch (response.statusCode) {
         case StatusCodes.OK:
