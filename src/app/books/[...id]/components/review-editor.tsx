@@ -12,6 +12,7 @@ function ReviewEditorForm(
     {
         bookId,
         input,
+        author,
         state,
         formAction,
         isPending,
@@ -20,7 +21,8 @@ function ReviewEditorForm(
     }:
     {
         bookId: number,
-        input: { author: string, content: string },
+        input: {  content: string },
+        author: string,
         state: PostReviewResult,
         formAction: any,
         isPending: boolean,
@@ -34,7 +36,7 @@ function ReviewEditorForm(
                 <input name="bookId" value={bookId} readOnly hidden/>
 
                 <div className={styles.input_area}>
-                    <input name="author" value={input.author} disabled={isPending} placeholder="작성자 명" required readOnly/>
+                    <input name="author" value={author} disabled={isPending} placeholder="작성자 명" required readOnly/>
                 </div>
 
                 <div className={styles.input_area}>
@@ -51,7 +53,7 @@ function ReviewEditorForm(
 
 
 export default function ReviewEditor({ bookId}: { bookId: number }) {
-    const [input, setInput] = useState({ author: "", content: ""})
+    const [input, setInput] = useState({ content: ""})
     const [state, formAction, isPending] = useActionState(createReviewAction, { result: FormSubmitResultType.INITIAL });
     const onChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
         setInput({
@@ -60,24 +62,25 @@ export default function ReviewEditor({ bookId}: { bookId: number }) {
         });
     }
     const { data } = useSession()
+    const author = data?.user?.name || ""
 
     switch (state.result) {
         case FormSubmitResultType.BACKEND_ERROR:
             return <>
-                <ReviewEditorForm formAction={formAction} bookId={bookId} input={input} state={state} onChange={onChange} isPending={isPending} resultMessage="리뷰 작성 과정에서 오류가 발생했습니다"/>
+                <ReviewEditorForm formAction={formAction} bookId={bookId} input={input} author={author} state={state} onChange={onChange} isPending={isPending} resultMessage="리뷰 작성 과정에서 오류가 발생했습니다"/>
             </>
         case FormSubmitResultType.SUCCEEDED:
             return <>
-                <ReviewEditorForm formAction={formAction} bookId={bookId} input={input} state={state} onChange={onChange} isPending={isPending} resultMessage="리뷰가 작성되었습니다 🎉"/>
+                <ReviewEditorForm formAction={formAction} bookId={bookId} input={input} author={author} state={state} onChange={onChange} isPending={isPending} resultMessage="리뷰가 작성되었습니다 🎉"/>
             </>
         default:
             if (data?.user) {
-                return <ReviewEditorForm formAction={formAction} bookId={bookId} input={input} state={state} onChange={onChange} isPending={isPending}/>
+                return <ReviewEditorForm formAction={formAction} bookId={bookId} input={input} author={author} state={state} onChange={onChange} isPending={isPending}/>
             } else {
                 return (
                     <>
                         <span>로그인 후 리뷰를 작성해주세요</span>
-                        <button className={styles.login_button} onClick={() => signIn('ByUsername')}>로그인 하러가기</button>
+                        <button className={styles.login_button} onClick={() => signIn('Credentials')}>로그인 하러가기</button>
                     </>
                 )
             }
