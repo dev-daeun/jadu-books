@@ -36,7 +36,7 @@ function ReviewEditorForm(
                 <input name="bookId" value={bookId} readOnly hidden/>
 
                 <div className={styles.input_area}>
-                    <input name="author" value={author} disabled={isPending} placeholder="작성자 명" required readOnly/>
+                    <input name="author" value={author} disabled={true} placeholder="작성자 명" required readOnly />
                 </div>
 
                 <div className={styles.input_area}>
