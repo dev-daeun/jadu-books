@@ -26,9 +26,10 @@ export default async function RootLayout({
                   <div className={style.banner}>
                     <Image src="/thumbnail.png" alt="자두북스" width={26} height={26} />
                     <span>자두북스</span>
-                    <AuthBanner user={session?.user as User | undefined} />
+                    <div className={style.auth_banner}><AuthBanner user={session?.user as User | undefined} /></div>
                   </div>
                 </Link>
+
               </header>
               <main className={style.main}>{children}</main>
               {modal}

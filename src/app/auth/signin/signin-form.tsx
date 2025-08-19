@@ -51,7 +51,7 @@ function SignInForm(
     
                 { isPending ? <button type="submit" disabled={isPending} className={styles.deactivated_button}>진행 중</button> : <button type="submit" disabled={isPending} className={styles.activated_button}>로그인</button> }
             </form>
-            {backendErrorMessage ? <h4>{backendErrorMessage}</h4> : null}
+            {backendErrorMessage ? <span>{backendErrorMessage}</span> : null}
         </section>
     )
 

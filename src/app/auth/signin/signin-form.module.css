@@ -4,6 +4,10 @@
     gap: 5px;
 }
 
+.form_container label {
+    font-size: 14px;
+    color: grey;
+}
 
 .form_container input {
     padding: 10px;
@@ -13,7 +17,7 @@
 }
 
 .form_container .activated_button {
-    width: 80px;
+    width: 100%;
     padding: 10px;
     background-color: rgb(255, 140, 0);
     color: white;
@@ -23,7 +27,7 @@
 }
 
 .form_container .deactivated_button {
-    width: 80px;
+    width: 100%;
     padding: 10px;
     background-color: grey;
     color: white;
@@ -34,6 +38,9 @@
 
 .input_area {
     margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
 }
 
 .input_area .warning_message {

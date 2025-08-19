@@ -18,6 +18,12 @@
     gap: 6px;
 }
 
+.auth_banner {
+    margin-left: auto;
+    color: grey;
+}
+
+
 .link {
     color: black;
     text-decoration: none;
