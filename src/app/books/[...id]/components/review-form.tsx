@@ -4,7 +4,7 @@ import { useActionState, useState } from "react";
 import { createReviewAction } from "@/services/reviews";
 import { PostReviewResult } from "@/types/review";
 import { FormSubmitResultType } from "@/types/form-submit";
-import styles from "./review-editor.module.css"
+import styles from "./review-form.module.css"
 import { signIn, useSession } from "next-auth/react";
 
 
