@@ -9,7 +9,6 @@ import ReviewEditor from "./components/review-editor";
 import ReviewList from "./components/review-list";
 import Image from "next/image";
 import { fetchAllBooks } from "@/services/books";
-import { getServerSession } from "next-auth";
 
 
 export async function generateStaticParams() {
@@ -53,15 +52,13 @@ export async function generateMetadata({ params }: { params: { id: string[] } })
 export default async function Page({ params }: { params: { id: string[] } }) {
     const bookId = Number(params.id[0])
     const response: ApiResponse<BookItem | null> = await fetchBook(bookId)
-    const session = await getServerSession()
-    const author = session?.user?.name || ""
   
     switch (response.statusCode) {
         case StatusCodes.OK:
             return (
                 <div className={styles.container}>
                     <BookDetail {...response.data as BookItem}/>
-                    <ReviewEditor bookId={bookId} author={author}/>
+                    <ReviewEditor bookId={bookId} />
                     <ReviewList bookId={bookId} />
                 </div>
             )

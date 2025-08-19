@@ -5,7 +5,7 @@ import { createReviewAction } from "@/services/reviews";
 import { PostReviewResult } from "@/types/review";
 import { FormSubmitResultType } from "@/types/form-submit";
 import styles from "./review-editor.module.css"
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 
 
 function ReviewEditorForm(
@@ -50,8 +50,8 @@ function ReviewEditorForm(
 }
 
 
-export default function ReviewEditor({ bookId, author}: { bookId: number, author: string }) {
-    const [input, setInput] = useState({ author: author, content: ""})
+export default function ReviewEditor({ bookId}: { bookId: number }) {
+    const [input, setInput] = useState({ author: "", content: ""})
     const [state, formAction, isPending] = useActionState(createReviewAction, { result: FormSubmitResultType.INITIAL });
     const onChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
         setInput({
@@ -59,6 +59,7 @@ export default function ReviewEditor({ bookId, author}: { bookId: number, author
             [e.target.name]: e.target.value,
         });
     }
+    const { data } = useSession()
 
     switch (state.result) {
         case FormSubmitResultType.BACKEND_ERROR:
@@ -70,7 +71,7 @@ export default function ReviewEditor({ bookId, author}: { bookId: number, author
                 <ReviewEditorForm formAction={formAction} bookId={bookId} input={input} state={state} onChange={onChange} isPending={isPending} resultMessage="리뷰가 작성되었습니다 🎉"/>
             </>
         default:
-            if (author) {
+            if (data?.user) {
                 return <ReviewEditorForm formAction={formAction} bookId={bookId} input={input} state={state} onChange={onChange} isPending={isPending}/>
             } else {
                 return (
