@@ -73,6 +73,7 @@ export default function SignIn({ csrfToken }: { csrfToken: string }) {
             }).then(() => {
                 router.back()
             })
+            return null
         case FormSubmitResultType.BACKEND_ERROR:
             return <>
                 <SignInForm formAction={formAction} csrfToken={csrfToken} input={input} state={state} onChange={onChange} isPending={isPending}/>

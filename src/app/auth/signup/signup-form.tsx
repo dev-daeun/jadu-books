@@ -79,6 +79,7 @@ export default function SignUp({ csrfToken }: { csrfToken: string }) {
                 alert("회원가입이 완료되었습니다")
                 window.location.href = "/"
             })
+            return null
         case FormSubmitResultType.BACKEND_ERROR:
             return <>
                 <SignUpForm formAction={formAction} csrfToken={csrfToken} input={input} state={state} onChange={onChange} isPending={isPending}/>
