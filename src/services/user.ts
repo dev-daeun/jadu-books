@@ -2,7 +2,7 @@
 
 import redis from "@/app/util/redis"
 import { FormSubmitResultType } from "@/types/form-submit"
-import { SignUpResult, signUpSchema, SignUpValidationError, SignUpSchemaKeys, signInSchema, SignInResult, SignInValidationError, SignInSchemaKeys, SignInUser } from "@/types/user"
+import { SignUpResult, signUpSchema, SignUpValidationError, SignUpSchemaKeys, signInSchema, SignInResult, SignInValidationError, SignInSchemaKeys } from "@/types/user"
 
 
 // TODO : 비즈니스 로직 담당하는 백엔드 서버에 persistance layer 적용, 해당 백엔드 서버 API 호출
