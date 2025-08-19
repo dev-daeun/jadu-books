@@ -19,6 +19,7 @@ function SignInForm(
         formAction,
         isPending,
         onChange,
+        backendErrorMessage,
     }:
     {
         csrfToken: string,
@@ -27,6 +28,7 @@ function SignInForm(
         formAction: any,
         isPending: boolean,
         onChange: (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => void,
+        backendErrorMessage?: string,
     }
 ) {
 
@@ -49,6 +51,7 @@ function SignInForm(
     
                 { isPending ? <button type="submit" disabled={isPending} className={styles.deactivated_button}>진행 중</button> : <button type="submit" disabled={isPending} className={styles.activated_button}>로그인</button> }
             </form>
+            {backendErrorMessage ? <h4>{backendErrorMessage}</h4> : null}
         </section>
     )
 
@@ -75,6 +78,8 @@ export default function SignIn({ csrfToken }: { csrfToken: string }) {
             }).then(() => {
                 router.back()
             })
+        case FormSubmitResultType.BACKEND_ERROR:
+            return <SignInForm formAction={formAction} csrfToken={csrfToken} input={input} state={state} onChange={onChange} isPending={isPending} backendErrorMessage="로그인 과정에서 오류가 발생했습니다"/>
         default:
             return <SignInForm formAction={formAction} csrfToken={csrfToken} input={input} state={state} onChange={onChange} isPending={isPending}/>
 

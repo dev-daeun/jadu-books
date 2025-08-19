@@ -49,7 +49,6 @@ export type SignInValidationError = Partial<Record<SignInSchemaKeys, string>>
 
 
 export type SignInUser = {
-    id: string,
     username: string,
     password: string,
 }

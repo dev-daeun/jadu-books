@@ -18,6 +18,7 @@ function SignUpForm(
         formAction,
         isPending,
         onChange,
+        backendErrorMessage,
     }:
     {
         csrfToken: string,
@@ -26,6 +27,7 @@ function SignUpForm(
         formAction: any,
         isPending: boolean,
         onChange: (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => void,
+        backendErrorMessage?: string,
     }
 ) {
 
@@ -53,6 +55,7 @@ function SignUpForm(
                 </div>         
     
                 { isPending ? <button type="submit" disabled={isPending} className={styles.deactivated_button}>진행 중</button> : <button type="submit" disabled={isPending} className={styles.activated_button}>가입완료</button> }
+                {backendErrorMessage ? <h4>{backendErrorMessage}</h4> : null}
             </form>
         </section>
     )
@@ -81,6 +84,8 @@ export default function SignUp({ csrfToken }: { csrfToken: string }) {
                 alert("회원가입이 완료되었습니다")
                 window.location.href = "/"
             })
+        case FormSubmitResultType.BACKEND_ERROR:
+            return <SignUpForm formAction={formAction} csrfToken={csrfToken} input={input} state={state} onChange={onChange} isPending={isPending} backendErrorMessage="회원가입 과정에서 오류가 발생했습니다"/>
         default:
             return <SignUpForm formAction={formAction} csrfToken={csrfToken} input={input} state={state} onChange={onChange} isPending={isPending}/>
     }
