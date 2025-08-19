@@ -80,7 +80,7 @@ export default function ReviewEditor({ bookId}: { bookId: number }) {
                 return (
                     <>
                         <span>로그인 후 리뷰를 작성해주세요</span>
-                        <button className={styles.login_button} onClick={() => signIn('Credentials')}>로그인 하러가기</button>
+                        <button className={styles.login_button} onClick={() => signIn('credentials')}>로그인 하러가기</button>
                     </>
                 )
             }
