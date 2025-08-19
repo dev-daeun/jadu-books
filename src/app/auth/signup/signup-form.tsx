@@ -77,7 +77,6 @@ export default function SignUp({ csrfToken }: { csrfToken: string }) {
         case FormSubmitResultType.SUCCEEDED:
             signIn('credentials', {
                 username: state.data!.username,
-                password: state.data!.password,
                 redirect: false,
             }).then(() => {
                 alert("회원가입이 완료되었습니다")

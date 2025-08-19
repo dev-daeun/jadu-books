@@ -12,13 +12,13 @@ const handler = NextAuth({
         password: { label: "Password", type: "password" },
       },
       authorize: async (credentials) => {
-        if (!credentials || !credentials.username || !credentials.password) {
-          return null
+        if (credentials?.username) {
+          return {
+            name: credentials!.username,
+            id: crypto.randomUUID(),  // id 쓰이는 곳 없지만 nextauth 에서 요구하므로 random ID 생성
+          }
         }
-        return {
-          name: credentials!.username,
-          id: crypto.randomUUID(),  // id 쓰이는 곳 없지만 nextauth 에서 요구하므로 random ID 생성
-        }
+        return null
       }
     })
   ],

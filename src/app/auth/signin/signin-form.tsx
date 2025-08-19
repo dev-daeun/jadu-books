@@ -71,9 +71,7 @@ export default function SignIn({ csrfToken }: { csrfToken: string }) {
     switch (state.result) {
         case FormSubmitResultType.SUCCEEDED:
             signIn('credentials', {
-                id: 1,
                 username: state.data!.username,
-                password: state.data!.password,
                 redirect: false,
             }).then(() => {
                 router.back()
