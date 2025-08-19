@@ -4,7 +4,7 @@ import { BookItem } from "@/types/book-item";
 import { StatusCodes } from "http-status-codes";
 import styles from "./page.module.css"
 import { notFound } from "next/navigation";
-import BackendErrorMessage from "@/app/books/components/backend-error-message";
+import BackendErrorMessage from "@/app/(auth-banner)/books/components/backend-error-message";
 import ReviewEditor from "./components/review-form";
 import ReviewList from "./components/review-list";
 import Image from "next/image";
