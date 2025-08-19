@@ -22,6 +22,14 @@ const handler = NextAuth({
       },
     })
   ],
+  session: {
+    strategy: "database",
+    maxAge: 60 * 60 * 24 * 7,
+    updateAge: 60 * 60 * 24,
+    generateSessionToken: () => {
+      return crypto.randomUUID()
+    },
+  },
   callbacks: {
     signIn: async ({ user, account, profile, email, credentials }) => {
       console.log("SIGN IN : ", user, account, profile, email, credentials)
