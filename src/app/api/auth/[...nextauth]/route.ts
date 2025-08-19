@@ -23,12 +23,9 @@ const handler = NextAuth({
     })
   ],
   session: {
-    strategy: "database",
+    strategy: "jwt",
     maxAge: 60 * 60 * 24 * 7,
     updateAge: 60 * 60 * 24,
-    generateSessionToken: () => {
-      return crypto.randomUUID()
-    },
   },
   callbacks: {
     signIn: async ({ user, account, profile, email, credentials }) => {
