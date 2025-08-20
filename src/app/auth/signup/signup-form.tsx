@@ -5,7 +5,7 @@ import { signUpAction } from "@/services/user";
 import { FormSubmitResultType } from "@/types/form-submit";
 import { SignUpResult } from "@/types/user";
 
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import styles from "./signup-form.module.css"
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -61,6 +61,20 @@ function SignUpForm(
 }
 
 
+function SignUpCheckout({ username }: { username: string }) {
+    useEffect(() => {
+        signIn('credentials', {
+            username: username,
+            redirect: false,
+        })
+    }, [])
+    return <>
+        <h3 className={styles.checkout_message}>완료되었습니다</h3>
+        <button className={styles.checkout_button} onClick={() => { window.location.href = "/" }}>메인페이지로 이동하기</button>
+    </>
+}
+
+
 export default function SignUp({ csrfToken }: { csrfToken: string }) {
     const [input, setInput] = useState({username: "", password: "", confirmPassword: ""})
     const [state, formAction, isPending] = useActionState(signUpAction, { result: FormSubmitResultType.INITIAL });
@@ -71,17 +85,9 @@ export default function SignUp({ csrfToken }: { csrfToken: string }) {
             [e.target.name]: e.target.value,
         });
     }
-
     switch (state.result) {
         case FormSubmitResultType.SUCCEEDED:
-            signIn('credentials', {
-                username: state.data!.username,
-                redirect: false,
-            }).then(() => {
-                alert("회원가입이 완료되었습니다")
-                window.location.href = "/"
-            })
-            break
+            return <SignUpCheckout username={input.username} />
         case FormSubmitResultType.CSRF_ERROR:
             router.push("/error/forbidden")
             break

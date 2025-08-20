@@ -48,3 +48,19 @@
     font-size: 12px;
     margin-top: 5px;
 }
+
+
+.checkout_message {
+    color: grey;
+}
+
+
+.checkout_button {
+    width: 100%;
+    padding: 10px;
+    background-color: rgb(255, 140, 0);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
