@@ -6,6 +6,7 @@ import { PostReviewResult } from "@/types/review";
 import { FormSubmitResultType } from "@/types/form-submit";
 import styles from "./review-form.module.css"
 import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 
 function ReviewEditorForm(
@@ -17,6 +18,7 @@ function ReviewEditorForm(
         formAction,
         isPending,
         onChange,
+        csrfToken,
         resultMessage
     }:
     {
@@ -27,6 +29,7 @@ function ReviewEditorForm(
         formAction: any,
         isPending: boolean,
         onChange: (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => void,
+        csrfToken: string,
         resultMessage?: string,
     }
 ) {
@@ -34,6 +37,7 @@ function ReviewEditorForm(
         <section className={styles.form_container}>
             <form action={formAction}>
                 <input name="bookId" value={bookId} readOnly hidden/>
+                <input name="csrfToken" value={csrfToken} readOnly hidden/>
 
                 <div className={styles.input_area}>
                     <input name="author" value={author} disabled={true} placeholder="작성자 명" required readOnly />
@@ -52,8 +56,9 @@ function ReviewEditorForm(
 }
 
 
-export default function ReviewEditor({ bookId}: { bookId: number }) {
+export default function ReviewEditor({ bookId, csrfToken }: { bookId: number, csrfToken: string }) {
     const [input, setInput] = useState({ content: ""})
+    const router = useRouter()
     const [state, formAction, isPending] = useActionState(createReviewAction, { result: FormSubmitResultType.INITIAL });
     const onChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
         setInput({
@@ -65,17 +70,20 @@ export default function ReviewEditor({ bookId}: { bookId: number }) {
     const author = data?.user?.name || ""
 
     switch (state.result) {
+        case FormSubmitResultType.CSRF_ERROR:
+            router.push("/error/forbidden")
+            break
         case FormSubmitResultType.BACKEND_ERROR:
             return <>
-                <ReviewEditorForm formAction={formAction} bookId={bookId} input={input} author={author} state={state} onChange={onChange} isPending={isPending} resultMessage="리뷰 작성 과정에서 오류가 발생했습니다"/>
+                <ReviewEditorForm formAction={formAction} bookId={bookId} csrfToken={csrfToken} input={input} author={author} state={state} onChange={onChange} isPending={isPending} resultMessage="리뷰 작성 과정에서 오류가 발생했습니다"/>
             </>
         case FormSubmitResultType.SUCCEEDED:
             return <>
-                <ReviewEditorForm formAction={formAction} bookId={bookId} input={input} author={author} state={state} onChange={onChange} isPending={isPending} resultMessage="리뷰가 작성되었습니다 🎉"/>
+                <ReviewEditorForm formAction={formAction} bookId={bookId} csrfToken={csrfToken} input={input} author={author} state={state} onChange={onChange} isPending={isPending} resultMessage="리뷰가 작성되었습니다 🎉"/>
             </>
         default:
             if (data?.user) {
-                return <ReviewEditorForm formAction={formAction} bookId={bookId} input={input} author={author} state={state} onChange={onChange} isPending={isPending}/>
+                return <ReviewEditorForm formAction={formAction} bookId={bookId} csrfToken={csrfToken} input={input} author={author} state={state} onChange={onChange} isPending={isPending}/>
             } else {
                 return (
                     <>

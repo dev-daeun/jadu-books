@@ -73,14 +73,17 @@ export default function SignIn({ csrfToken }: { csrfToken: string }) {
             }).then(() => {
                 router.back()
             })
-            return null
+            break
+        case FormSubmitResultType.CSRF_ERROR:
+            router.push("/error/forbidden")
+            break
         case FormSubmitResultType.BACKEND_ERROR:
             return <>
                 <SignInForm formAction={formAction} csrfToken={csrfToken} input={input} state={state} onChange={onChange} isPending={isPending}/>
                 <span>로그인 과정에서 오류가 발생했습니다</span>
             </>
         default:
-            return <SignInForm formAction={formAction} csrfToken={csrfToken} input={input} state={state} onChange={onChange} isPending={isPending}/>
+                return <SignInForm formAction={formAction} csrfToken={csrfToken} input={input} state={state} onChange={onChange} isPending={isPending}/>
 
     }
 }

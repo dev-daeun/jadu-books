@@ -5,15 +5,21 @@ import { useActionState, useRef } from "react"
 import { FormSubmitResultType } from "@/types/form-submit"
 import { deleteReviewAction } from "@/services/reviews"
 import { useEffect } from "react"
+import { useRouter } from "next/navigation"
 
 
 export default function ReviewDelete({ reviewId, bookId }: { reviewId: number, bookId: number }) {
+    const router = useRouter()
     const [state, formAction, isPending] = useActionState(deleteReviewAction, { result: FormSubmitResultType.INITIAL });
     const formRef = useRef<HTMLFormElement>(null)
 
     useEffect(() => {
-        if (state.result === FormSubmitResultType.BACKEND_ERROR) {
-            alert("리뷰 삭제 과정에서 오류가 발생했습니다.")
+        switch (state.result) {
+            case FormSubmitResultType.CSRF_ERROR:
+                router.push("/error/forbidden")
+                break
+            case FormSubmitResultType.BACKEND_ERROR:
+                alert("리뷰 삭제 과정에서 오류가 발생했습니다.")
         }
     }, [state])
 

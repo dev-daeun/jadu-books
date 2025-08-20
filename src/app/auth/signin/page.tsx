@@ -1,12 +1,11 @@
 import Link from "next/link";
 import SignIn from "./signin-form";
-import Tokens from "csrf";
-import { getCsrfToken } from "next-auth/react";
-import settings from "@/settings";
+import { getCsrfToken } from "@/app/util/csrf-token";
 import styles from "./page.module.css"
 
+
 export default async function Page() {
-    const csrfToken = await getCsrfToken() || new Tokens().create(settings.csrfSecret)
+    const csrfToken = getCsrfToken()
     return <>
         <h1>로그인</h1>   
         <SignIn csrfToken={csrfToken} />

@@ -7,6 +7,7 @@ import { StatusCodes } from "http-status-codes"
 import settings from "@/settings"
 import { revalidateTag } from "next/cache"
 import { FormSubmitResultType } from "@/types/form-submit"
+import { verifyCsrfToken } from "@/app/util/csrf-token"
 
 
 async function requestPostReview(review: Review): Promise<ApiResponse<Review | null>> {
@@ -28,6 +29,10 @@ async function requestPostReview(review: Review): Promise<ApiResponse<Review | n
 
 
 export async function createReviewAction(previousState: PostReviewResult, formData: FormData): Promise<PostReviewResult> {
+    if (!verifyCsrfToken(formData.get("csrfToken")?.toString() || "")) {
+        return { result: FormSubmitResultType.CSRF_ERROR }
+    }
+
     const result = reviewSchema.safeParse({
         author: formData.get("author")?.toString(),
         content: formData.get("content")?.toString(),
@@ -85,6 +90,10 @@ async function requestDeleteReview(reviewId: number): Promise<ApiResponse<null>>
 
 
 export async function deleteReviewAction(previousState: PostReviewResult, formData: FormData): Promise<PostReviewResult> {
+    if (!verifyCsrfToken(formData.get("csrfToken")?.toString() || "")) {
+        return { result: FormSubmitResultType.CSRF_ERROR }
+    }
+
     const reviewId = Number(formData.get("reviewId"))
     const bookId = Number(formData.get("bookId"))
     const response = await requestDeleteReview(reviewId)

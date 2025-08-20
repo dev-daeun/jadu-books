@@ -8,6 +8,7 @@ import { SignUpResult } from "@/types/user";
 import { useActionState, useState } from "react";
 import styles from "./signup-form.module.css"
 import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 
 function SignUpForm(
@@ -63,6 +64,7 @@ function SignUpForm(
 export default function SignUp({ csrfToken }: { csrfToken: string }) {
     const [input, setInput] = useState({username: "", password: "", confirmPassword: ""})
     const [state, formAction, isPending] = useActionState(signUpAction, { result: FormSubmitResultType.INITIAL });
+    const router = useRouter()
     const onChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
         setInput({
             ...input,
@@ -79,7 +81,10 @@ export default function SignUp({ csrfToken }: { csrfToken: string }) {
                 alert("회원가입이 완료되었습니다")
                 window.location.href = "/"
             })
-            return null
+            break
+        case FormSubmitResultType.CSRF_ERROR:
+            router.push("/error/forbidden")
+            break
         case FormSubmitResultType.BACKEND_ERROR:
             return <>
                 <SignUpForm formAction={formAction} csrfToken={csrfToken} input={input} state={state} onChange={onChange} isPending={isPending}/>

@@ -1,5 +1,6 @@
 "use server"
 
+import { verifyCsrfToken } from "@/app/util/csrf-token"
 import redis from "@/app/util/redis"
 import { FormSubmitResultType } from "@/types/form-submit"
 import { SignUpResult, signUpSchema, SignUpValidationError, SignUpSchemaKeys, signInSchema, SignInResult, SignInValidationError, SignInSchemaKeys } from "@/types/user"
@@ -18,6 +19,10 @@ async function getUser(username: string): Promise<string | null> {
 
 
 export async function signUpAction(previousState: SignUpResult, formData: FormData): Promise<SignUpResult> {
+    if (!verifyCsrfToken(formData.get("csrfToken")?.toString() || "")) {
+        return { result: FormSubmitResultType.CSRF_ERROR }
+    }
+
     const result = signUpSchema.safeParse({
         username: formData.get("username")?.toString(),
         password: formData.get("password")?.toString(),
@@ -57,6 +62,10 @@ export async function signUpAction(previousState: SignUpResult, formData: FormDa
 
 
 export async function signInAction(previousState: SignInResult, formData: FormData): Promise<SignInResult> {
+    if (!verifyCsrfToken(formData.get("csrfToken")?.toString() || "")) {
+        return { result: FormSubmitResultType.CSRF_ERROR }
+    }
+
     const result = signInSchema.safeParse({
         username: formData.get("username")?.toString(),
         password: formData.get("password")?.toString(),

@@ -9,6 +9,7 @@ import ReviewEditor from "./components/review-form";
 import ReviewList from "./components/review-list";
 import Image from "next/image";
 import { fetchAllBooks } from "@/services/books";
+import { getCsrfToken } from "@/app/util/csrf-token";
 
 
 export async function generateStaticParams() {
@@ -52,13 +53,14 @@ export async function generateMetadata({ params }: { params: { id: string[] } })
 export default async function Page({ params }: { params: { id: string[] } }) {
     const bookId = Number(params.id[0])
     const response: ApiResponse<BookItem | null> = await fetchBook(bookId)
-  
+    const csrfToken = getCsrfToken()
+    
     switch (response.statusCode) {
         case StatusCodes.OK:
             return (
                 <div className={styles.container}>
                     <BookDetail {...response.data as BookItem}/>
-                    <ReviewEditor bookId={bookId} />
+                    <ReviewEditor bookId={bookId} csrfToken={csrfToken} />
                     <ReviewList bookId={bookId} />
                 </div>
             )
