@@ -8,7 +8,7 @@ import { useEffect } from "react"
 import { useRouter } from "next/navigation"
 
 
-export default function ReviewDelete({ reviewId, bookId }: { reviewId: number, bookId: number }) {
+export default function ReviewDelete({ reviewId, bookId, csrfToken }: { reviewId: number, bookId: number, csrfToken: string }) {
     const router = useRouter()
     const [state, formAction, isPending] = useActionState(deleteReviewAction, { result: FormSubmitResultType.INITIAL });
     const formRef = useRef<HTMLFormElement>(null)
@@ -32,6 +32,7 @@ export default function ReviewDelete({ reviewId, bookId }: { reviewId: number, b
         <form ref={formRef} action={formAction}>
             <input name="reviewId" value={reviewId} readOnly hidden/>
             <input name="bookId" value={bookId} readOnly hidden/>
+            <input name="csrfToken" value={csrfToken} readOnly hidden/>
             { isPending ? <div>...</div> : <div style={{cursor: "pointer"}} onClick={onClick}>삭제</div> }
         </form>
     )
