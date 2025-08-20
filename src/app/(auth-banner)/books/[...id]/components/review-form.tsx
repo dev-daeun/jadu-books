@@ -1,6 +1,6 @@
 "use client"
 
-import { useActionState, useState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { createReviewAction } from "@/services/reviews";
 import { PostReviewResult } from "@/types/review";
 import { FormSubmitResultType } from "@/types/form-submit";
@@ -68,6 +68,12 @@ export default function ReviewEditor({ bookId, csrfToken }: { bookId: number, cs
     }
     const { data } = useSession()
     const author = data?.user?.name || ""
+
+    useEffect(() => {
+        if (state.result === FormSubmitResultType.SUCCEEDED) {
+            setInput({ content: "" })
+        }
+    }, [state.result])
 
     switch (state.result) {
         case FormSubmitResultType.CSRF_ERROR:
