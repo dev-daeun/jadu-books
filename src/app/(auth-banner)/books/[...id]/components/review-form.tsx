@@ -56,10 +56,30 @@ function ReviewEditorForm(
 }
 
 
+function ReviewSucceedMessage() {
+    const [visible, setVisible] = useState(true);  
+
+    useEffect(() => {
+        const disappearTimer = setTimeout(() => setVisible(false), 1000);
+        
+        return () => {
+            clearTimeout(disappearTimer);
+        };
+    }, []);
+
+    return (
+        <div className={visible ? styles.show : styles.hide}>
+            리뷰가 작성되었습니다 🎉
+        </div>
+    );
+}
+
+
 export default function ReviewEditor({ bookId, csrfToken }: { bookId: number, csrfToken: string }) {
     const [input, setInput] = useState({ content: ""})
     const router = useRouter()
     const [state, formAction, isPending] = useActionState(createReviewAction, { result: FormSubmitResultType.INITIAL });
+    const [version, setVersion] = useState(0);
     const onChange = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
         setInput({
             ...input,
@@ -72,8 +92,11 @@ export default function ReviewEditor({ bookId, csrfToken }: { bookId: number, cs
     useEffect(() => {
         if (state.result === FormSubmitResultType.SUCCEEDED) {
             setInput({ content: "" })
+            setVersion(version + 1)
         }
-    }, [state.result])
+    }, [state])
+
+
 
     switch (state.result) {
         case FormSubmitResultType.CSRF_ERROR:
@@ -85,7 +108,8 @@ export default function ReviewEditor({ bookId, csrfToken }: { bookId: number, cs
             </>
         case FormSubmitResultType.SUCCEEDED:
             return <>
-                <ReviewEditorForm formAction={formAction} bookId={bookId} csrfToken={csrfToken} input={input} author={author} state={state} onChange={onChange} isPending={isPending} resultMessage="리뷰가 작성되었습니다 🎉"/>
+                <ReviewEditorForm formAction={formAction} bookId={bookId} csrfToken={csrfToken} input={input} author={author} state={state} onChange={onChange} isPending={isPending} />
+                <ReviewSucceedMessage key={version} />
             </>
         default:
             if (data?.user) {
