@@ -7,7 +7,7 @@ import { StatusCodes } from "http-status-codes"
 import settings from "@/settings"
 import { revalidateTag } from "next/cache"
 import { FormSubmitResultType } from "@/types/form-submit"
-import { verifyCsrfToken } from "@/app/util/csrf-token"
+import { requireCsrf } from "./csrf-decorator"
 
 
 async function requestPostReview(review: Review): Promise<ApiResponse<Review | null>> {
@@ -28,11 +28,7 @@ async function requestPostReview(review: Review): Promise<ApiResponse<Review | n
 }   
 
 
-export async function createReviewAction(previousState: PostReviewResult, formData: FormData): Promise<PostReviewResult> {
-    if (!verifyCsrfToken(formData.get("csrfToken")?.toString() || "")) {
-        return { result: FormSubmitResultType.CSRF_ERROR }
-    }
-
+export const createReviewAction = requireCsrf(async (previousState: PostReviewResult, formData: FormData): Promise<PostReviewResult> => {
     const result = reviewSchema.safeParse({
         author: formData.get("author")?.toString(),
         content: formData.get("content")?.toString(),
@@ -52,7 +48,7 @@ export async function createReviewAction(previousState: PostReviewResult, formDa
         return { result: FormSubmitResultType.SUCCEEDED, backendResponse: response }
     }
     return { result: FormSubmitResultType.BACKEND_ERROR, backendResponse: response }
-}
+})
 
 
 export async function getReviews(bookId: number): Promise<ApiResponse<ReviewItem[]>> {
@@ -89,11 +85,7 @@ async function requestDeleteReview(reviewId: number): Promise<ApiResponse<null>>
 }
 
 
-export async function deleteReviewAction(previousState: PostReviewResult, formData: FormData): Promise<PostReviewResult> {
-    if (!verifyCsrfToken(formData.get("csrfToken")?.toString() || "")) {
-        return { result: FormSubmitResultType.CSRF_ERROR }
-    }
-
+export const deleteReviewAction = requireCsrf(async (previousState: PostReviewResult, formData: FormData): Promise<PostReviewResult> => {
     const reviewId = Number(formData.get("reviewId"))
     const bookId = Number(formData.get("bookId"))
     const response = await requestDeleteReview(reviewId)
@@ -102,4 +94,4 @@ export async function deleteReviewAction(previousState: PostReviewResult, formDa
         return { result: FormSubmitResultType.SUCCEEDED, backendResponse: response }
     }
     return { result: FormSubmitResultType.BACKEND_ERROR, backendResponse: response }
-}
+})

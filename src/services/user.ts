@@ -1,9 +1,9 @@
 "use server"
 
-import { verifyCsrfToken } from "@/app/util/csrf-token"
 import redis from "@/app/util/redis"
 import { FormSubmitResultType } from "@/types/form-submit"
 import { SignUpResult, signUpSchema, SignUpValidationError, SignUpSchemaKeys, signInSchema, SignInResult, SignInValidationError, SignInSchemaKeys } from "@/types/user"
+import { requireCsrf } from "./csrf-decorator"
 
 
 // TODO : 비즈니스 로직 담당하는 백엔드 서버에 persistance layer 적용, 해당 백엔드 서버 API 호출
@@ -18,11 +18,7 @@ async function getUser(username: string): Promise<string | null> {
 
 
 
-export async function signUpAction(previousState: SignUpResult, formData: FormData): Promise<SignUpResult> {
-    if (!verifyCsrfToken(formData.get("csrfToken")?.toString() || "")) {
-        return { result: FormSubmitResultType.CSRF_ERROR }
-    }
-
+export const signUpAction = requireCsrf(async (previousState: SignUpResult, formData: FormData): Promise<SignUpResult> => {
     const result = signUpSchema.safeParse({
         username: formData.get("username")?.toString(),
         password: formData.get("password")?.toString(),
@@ -56,16 +52,10 @@ export async function signUpAction(previousState: SignUpResult, formData: FormDa
         result: FormSubmitResultType.SUCCEEDED,
         data: { username: result.data.username, password: result.data.password },
      }
+})
 
 
-}
-
-
-export async function signInAction(previousState: SignInResult, formData: FormData): Promise<SignInResult> {
-    if (!verifyCsrfToken(formData.get("csrfToken")?.toString() || "")) {
-        return { result: FormSubmitResultType.CSRF_ERROR }
-    }
-
+export const signInAction = requireCsrf(async (previousState: SignInResult, formData: FormData): Promise<SignInResult> => {
     const result = signInSchema.safeParse({
         username: formData.get("username")?.toString(),
         password: formData.get("password")?.toString(),
@@ -94,4 +84,4 @@ export async function signInAction(previousState: SignInResult, formData: FormDa
     }
     
     return { result: FormSubmitResultType.SUCCEEDED, data: {username: result.data.username, password: result.data.password} }
-}
+})
